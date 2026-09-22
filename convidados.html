@@ -1,0 +1,386 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Lista de Convidados - Casamento Elisa & Sérgio</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Great+Vibes&family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet" />
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              'serif-luxury': ['Cormorant Garamond', 'Garamond', 'Georgia', 'serif'],
+              'script': ['Great Vibes', 'cursive'],
+              'sans-clean': ['Montserrat', 'sans-serif'],
+            }
+          }
+        }
+      }
+    </script>
+    
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body class="bg-[#FBF9F5] text-[#2C3437] antialiased">
+    <div class="min-h-screen py-8 sm:py-12 px-4 max-w-6xl mx-auto space-y-8">
+      
+      <!-- Top Navigation -->
+      <div class="flex flex-wrap items-center justify-between gap-4">
+        <a
+          href="./index.html"
+          class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white border border-[#E1D4C3] text-[#473B2E] text-xs font-semibold hover:bg-[#F8F2E8] transition-all shadow-xs cursor-pointer"
+        >
+          <i data-lucide="arrow-left" class="w-4 h-4"></i>
+          <span>Voltar ao Convite</span>
+        </a>
+
+        <div class="flex items-center gap-3">
+          <a
+            href="./mensagens.html"
+            class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-[#FAF5EB] border border-[#D8C7B0] text-[#69543C] text-xs font-semibold hover:bg-[#F2E7D5] transition-all"
+          >
+            <i data-lucide="message-square" class="w-4 h-4"></i>
+            <span>Ver Mensagens & Presentes</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Header Banner -->
+      <div class="bg-white border-2 border-[#E7D7C1] rounded-3xl p-6 sm:p-8 shadow-sm">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
+          <div>
+            <span class="font-script text-3xl sm:text-4xl text-[#A67C52] block mb-1">
+              Gestão de Presenças
+            </span>
+            <h1 class="font-serif-luxury text-3xl sm:text-4xl font-bold text-[#2A3430]">
+              Lista Oficial de Convidados
+            </h1>
+            <p class="text-xs sm:text-sm text-[#5B6B67] mt-1 font-sans-clean">
+              Painel para acompanhamento e confirmação de presenças dos noivos Elisa & Sérgio.
+            </p>
+          </div>
+
+          <button
+            type="button"
+            onclick="openAddGuestModal()"
+            class="px-5 py-3 rounded-2xl bg-[#3D4C47] hover:bg-[#2B3833] text-white text-xs font-semibold shadow-md flex items-center gap-2 cursor-pointer self-start md:self-auto"
+          >
+            <i data-lucide="user-plus" class="w-4 h-4 text-[#E6CDAC]"></i>
+            <span>Adicionar Convidado</span>
+          </button>
+        </div>
+
+        <!-- Metrics Cards -->
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-6 pt-6 border-t border-[#EFE7DC]">
+          <div class="bg-[#FAF7F2] p-4 rounded-2xl border border-[#E9DFCFA]">
+            <span class="text-[10px] uppercase font-bold text-[#8A7966] tracking-wider block">Total Geral</span>
+            <span id="stat-total" class="font-serif-luxury text-2xl sm:text-3xl font-bold text-[#2B3532]">62</span>
+            <span class="text-[10px] text-[#6E7D78] block">pessoas cadastradas</span>
+          </div>
+
+          <div class="bg-[#F2F8F5] p-4 rounded-2xl border border-[#C5E1D4]">
+            <span class="text-[10px] uppercase font-bold text-emerald-800 tracking-wider block">Confirmados</span>
+            <span id="stat-confirmed" class="font-serif-luxury text-2xl sm:text-3xl font-bold text-emerald-700">2</span>
+            <span class="text-[10px] text-emerald-600 block">presenças garantidas</span>
+          </div>
+
+          <div class="bg-[#FAF6F0] p-4 rounded-2xl border border-[#EADBCA]">
+            <span class="text-[10px] uppercase font-bold text-[#9C764D] tracking-wider block">Pendentes</span>
+            <span id="stat-pending" class="font-serif-luxury text-2xl sm:text-3xl font-bold text-[#9C764D]">60</span>
+            <span class="text-[10px] text-[#866F58] block">aguardando resposta</span>
+          </div>
+
+          <div class="bg-[#FDF3F3] p-4 rounded-2xl border border-[#F1CECE]">
+            <span class="text-[10px] uppercase font-bold text-rose-800 tracking-wider block">Ausentes</span>
+            <span id="stat-declined" class="font-serif-luxury text-2xl sm:text-3xl font-bold text-rose-600">0</span>
+            <span class="text-[10px] text-rose-500 block">não comparecerão</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Filter Controls -->
+      <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
+        <!-- Search Input -->
+        <div class="relative w-full sm:w-80">
+          <input
+            id="guest-search"
+            type="text"
+            placeholder="Buscar por nome ou família..."
+            oninput="renderGuestsTable()"
+            class="w-full pl-10 pr-4 py-2.5 rounded-2xl bg-white border border-[#D8C7B0] text-xs text-[#2C3437] focus:outline-none focus:ring-2 focus:ring-[#3D4C47]"
+          />
+          <i data-lucide="search" class="w-4 h-4 text-[#8C765C] absolute left-3.5 top-3"></i>
+        </div>
+
+        <!-- Status Filter Buttons -->
+        <div class="flex flex-wrap items-center gap-2 text-xs">
+          <button class="status-btn px-4 py-2 rounded-full border border-[#D8C7B0] bg-[#3D4C47] text-white font-semibold cursor-pointer" onclick="filterByStatus('all')">Todos</button>
+          <button class="status-btn px-4 py-2 rounded-full border border-[#D8C7B0] bg-white text-[#56493A] hover:bg-[#FAF5EC] font-medium cursor-pointer" onclick="filterByStatus('Confirmado')">Confirmados</button>
+          <button class="status-btn px-4 py-2 rounded-full border border-[#D8C7B0] bg-white text-[#56493A] hover:bg-[#FAF5EC] font-medium cursor-pointer" onclick="filterByStatus('Pendente')">Pendentes</button>
+          <button class="status-btn px-4 py-2 rounded-full border border-[#D8C7B0] bg-white text-[#56493A] hover:bg-[#FAF5EC] font-medium cursor-pointer" onclick="filterByStatus('Ausente')">Ausentes</button>
+        </div>
+      </div>
+
+      <!-- Guests Table Container -->
+      <div class="bg-white rounded-3xl border-2 border-[#E7D7C1] shadow-sm overflow-hidden">
+        <div class="overflow-x-auto">
+          <table class="w-full text-left border-collapse text-xs font-sans-clean">
+            <thead>
+              <tr class="bg-[#FAF6EF] border-b border-[#E7D7C1] text-[#69553E] uppercase tracking-wider text-[10px]">
+                <th class="py-3.5 px-4 font-bold">Convidado</th>
+                <th class="py-3.5 px-4 font-bold">Grupo / Família</th>
+                <th class="py-3.5 px-4 font-bold">Categoria</th>
+                <th class="py-3.5 px-4 font-bold">Contato</th>
+                <th class="py-3.5 px-4 font-bold">Status</th>
+                <th class="py-3.5 px-4 font-bold text-right">Ações</th>
+              </tr>
+            </thead>
+            <tbody id="guests-table-body" class="divide-y divide-[#F2ECE1]">
+              <!-- Inserido dinamicamente via JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ADD/EDIT GUEST MODAL -->
+    <div id="guest-modal" class="hidden fixed inset-0 bg-black/60 backdrop-blur-xs z-50 flex items-center justify-center p-4">
+      <div class="bg-white rounded-3xl p-6 sm:p-8 max-w-md w-full shadow-2xl border border-[#E9DFD0]">
+        <div class="flex items-center justify-between mb-4">
+          <h3 class="font-serif-luxury text-2xl font-bold text-[#2A3430]">Adicionar Convidado</h3>
+          <button onclick="closeAddGuestModal()" class="text-stone-400 hover:text-stone-600">
+            <i data-lucide="x" class="w-5 h-5"></i>
+          </button>
+        </div>
+
+        <form onsubmit="saveNewGuest(event)" class="space-y-4 text-xs font-sans-clean">
+          <div>
+            <label class="block font-semibold text-[#46392B] mb-1">Nome Completo *</label>
+            <input id="new-guest-name" type="text" required class="w-full px-3.5 py-2.5 rounded-xl border border-[#D5C7B2] bg-[#FAF8F5] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#3D4C47]" />
+          </div>
+
+          <div>
+            <label class="block font-semibold text-[#46392B] mb-1">Família / Grupo Convite</label>
+            <input id="new-guest-group" type="text" placeholder="Ex: Família Souza" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D5C7B2] bg-[#FAF8F5] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#3D4C47]" />
+          </div>
+
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label class="block font-semibold text-[#46392B] mb-1">Tipo</label>
+              <select id="new-guest-type" class="w-full px-3 py-2.5 rounded-xl border border-[#D5C7B2] bg-[#FAF8F5]">
+                <option value="Adulto">Adulto</option>
+                <option value="Criança">Criança</option>
+              </select>
+            </div>
+
+            <div>
+              <label class="block font-semibold text-[#46392B] mb-1">Status Inicial</label>
+              <select id="new-guest-status" class="w-full px-3 py-2.5 rounded-xl border border-[#D5C7B2] bg-[#FAF8F5]">
+                <option value="Pendente">Pendente</option>
+                <option value="Confirmado">Confirmado</option>
+                <option value="Ausente">Ausente</option>
+              </select>
+            </div>
+          </div>
+
+          <div>
+            <label class="block font-semibold text-[#46392B] mb-1">Telefone / WhatsApp</label>
+            <input id="new-guest-phone" type="text" placeholder="+55 21 99999-9999" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D5C7B2] bg-[#FAF8F5] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#3D4C47]" />
+          </div>
+
+          <button type="submit" class="w-full py-3.5 rounded-2xl bg-[#3D4C47] text-white font-semibold shadow-md cursor-pointer hover:bg-[#2B3833] transition-all">
+            Salvar Convidado
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <!-- SCRIPTS -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+    <script src="./firebase-config.js"></script>
+    <script src="./data.js"></script>
+    <script>
+      let currentFilterStatus = 'all';
+
+      document.addEventListener('DOMContentLoaded', () => {
+        if (window.lucide) window.lucide.createIcons();
+        renderGuestsTable();
+        updateStats();
+      });
+
+      function updateStats() {
+        const guests = WeddingStorage.getGuests();
+        const total = guests.length;
+        const confirmed = guests.filter(g => g.status === 'Confirmado').length;
+        const pending = guests.filter(g => g.status === 'Pendente').length;
+        const declined = guests.filter(g => g.status === 'Ausente').length;
+
+        document.getElementById('stat-total').innerText = total;
+        document.getElementById('stat-confirmed').innerText = confirmed;
+        document.getElementById('stat-pending').innerText = pending;
+        document.getElementById('stat-declined').innerText = declined;
+      }
+
+      function filterByStatus(st) {
+        currentFilterStatus = st;
+        const buttons = document.querySelectorAll('.status-btn');
+        buttons.forEach(btn => {
+          if ((st === 'all' && btn.innerText === 'Todos') || btn.innerText === st + 's' || btn.innerText === st) {
+            btn.className = "status-btn px-4 py-2 rounded-full border border-[#D8C7B0] bg-[#3D4C47] text-white font-semibold cursor-pointer";
+          } else {
+            btn.className = "status-btn px-4 py-2 rounded-full border border-[#D8C7B0] bg-white text-[#56493A] hover:bg-[#FAF5EC] font-medium cursor-pointer";
+          }
+        });
+        renderGuestsTable();
+      }
+
+      function renderGuestsTable() {
+        const tbody = document.getElementById('guests-table-body');
+        if (!tbody) return;
+
+        const guests = WeddingStorage.getGuests();
+        const searchVal = document.getElementById('guest-search').value.toLowerCase().trim();
+
+        const filtered = guests.filter(g => {
+          const matchStatus = currentFilterStatus === 'all' || g.status === currentFilterStatus;
+          const matchSearch = !searchVal || g.name.toLowerCase().includes(searchVal) || (g.invitationGroup && g.invitationGroup.toLowerCase().includes(searchVal));
+          return matchStatus && matchSearch;
+        });
+
+        if (filtered.length === 0) {
+          tbody.innerHTML = `
+            <tr>
+              <td colspan="6" class="text-center py-8 text-[#8C7A68]">
+                Nenhum convidado encontrado para os filtros selecionados.
+              </td>
+            </tr>
+          `;
+          return;
+        }
+
+        tbody.innerHTML = filtered.map(g => {
+          let statusBadge = '';
+          if (g.status === 'Confirmado') {
+            statusBadge = `<span class="px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-800 font-bold text-[10px]">Confirmado</span>`;
+          } else if (g.status === 'Ausente') {
+            statusBadge = `<span class="px-2.5 py-1 rounded-full bg-rose-100 text-rose-800 font-bold text-[10px]">Ausente</span>`;
+          } else {
+            statusBadge = `<span class="px-2.5 py-1 rounded-full bg-amber-100 text-amber-800 font-bold text-[10px]">Pendente</span>`;
+          }
+
+          return `
+            <tr class="hover:bg-[#FAF8F5] transition-colors">
+              <td class="py-3 px-4 font-semibold text-[#2C3437]">
+                ${g.name}
+              </td>
+              <td class="py-3 px-4 text-[#5D6B67]">
+                ${g.invitationGroup || '—'}
+              </td>
+              <td class="py-3 px-4 text-[#6A7874]">
+                <span class="px-2 py-0.5 rounded-md bg-[#FAF5EB] border border-[#E6D8C5] text-[10px]">${g.type}</span>
+              </td>
+              <td class="py-3 px-4 text-[#5D6B67]">
+                ${g.phone ? `<a href="https://wa.me/${g.phone.replace(/[^0-9]/g, '')}" target="_blank" class="text-emerald-700 hover:underline flex items-center gap-1"><i data-lucide="phone" class="w-3 h-3"></i> ${g.phone}</a>` : '—'}
+              </td>
+              <td class="py-3 px-4">
+                ${statusBadge}
+              </td>
+              <td class="py-3 px-4 text-right space-x-1.5">
+                <button
+                  type="button"
+                  onclick="changeGuestStatus('${g.id}', 'Confirmado')"
+                  title="Marcar Confirmado"
+                  class="p-1.5 rounded-lg bg-emerald-50 hover:bg-emerald-100 text-emerald-700 cursor-pointer"
+                >
+                  <i data-lucide="check" class="w-3.5 h-3.5"></i>
+                </button>
+                <button
+                  type="button"
+                  onclick="changeGuestStatus('${g.id}', 'Ausente')"
+                  title="Marcar Ausente"
+                  class="p-1.5 rounded-lg bg-rose-50 hover:bg-rose-100 text-rose-700 cursor-pointer"
+                >
+                  <i data-lucide="x" class="w-3.5 h-3.5"></i>
+                </button>
+                <button
+                  type="button"
+                  onclick="removeGuest('${g.id}', '${g.name}')"
+                  title="Excluir Convidado"
+                  class="p-1.5 rounded-lg bg-stone-100 hover:bg-rose-100 text-stone-500 hover:text-rose-700 cursor-pointer"
+                >
+                  <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+                </button>
+              </td>
+            </tr>
+          `;
+        }).join('');
+
+        if (window.lucide) window.lucide.createIcons();
+      }
+
+      function changeGuestStatus(id, newStatus) {
+        const guests = WeddingStorage.getGuests();
+        const g = guests.find(item => item.id === id);
+        if (g) {
+          g.status = newStatus;
+          WeddingStorage.saveGuests(guests);
+          renderGuestsTable();
+          updateStats();
+        }
+      }
+
+      function removeGuest(id, name) {
+        if (confirm(`Deseja remover "${name}" da lista de convidados?`)) {
+          const guests = WeddingStorage.getGuests().filter(item => item.id !== id);
+          WeddingStorage.saveGuests(guests);
+          renderGuestsTable();
+          updateStats();
+        }
+      }
+
+      function openAddGuestModal() {
+        document.getElementById('guest-modal').classList.remove('hidden');
+        if (window.lucide) window.lucide.createIcons();
+      }
+
+      function closeAddGuestModal() {
+        document.getElementById('guest-modal').classList.add('hidden');
+      }
+
+      function saveNewGuest(e) {
+        e.preventDefault();
+        const name = document.getElementById('new-guest-name').value.trim();
+        const group = document.getElementById('new-guest-group').value.trim() || name;
+        const type = document.getElementById('new-guest-type').value;
+        const status = document.getElementById('new-guest-status').value;
+        const phone = document.getElementById('new-guest-phone').value.trim();
+
+        if (!name) return;
+
+        const guests = WeddingStorage.getGuests();
+        guests.push({
+          id: 'g-' + Date.now(),
+          name,
+          invitationGroup: group,
+          type,
+          status,
+          phone: phone || undefined
+        });
+
+        WeddingStorage.saveGuests(guests);
+        closeAddGuestModal();
+        renderGuestsTable();
+        updateStats();
+      }
+    </script>
+  </body>
+</html>

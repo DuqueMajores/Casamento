@@ -1,0 +1,6 @@
+{
+  "name": "Casamento Elisa & Sérgio",
+  "description": "Convite de casamento simples, elegante e responsivo de Elisa & Sérgio com confirmação de presença online, catálogo de presentes, lista de convidados e mapas dos locais.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

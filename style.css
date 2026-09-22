@@ -1,0 +1,72 @@
+/* Casamento Elisa & Sérgio - Estilos Personalizados */
+
+:root {
+  --font-serif: 'Playfair Display', Georgia, serif;
+  --font-luxury: 'Cormorant Garamond', Garamond, Georgia, serif;
+  --font-script: 'Great Vibes', cursive;
+  --font-sans: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  
+  --bg-sand: #FBF9F5;
+  --text-main: #2C3437;
+  --gold-primary: #D5B895;
+  --gold-dark: #A67C52;
+  --gold-border: #E8DDCE;
+  --sage-primary: #3D4C47;
+  --sage-dark: #2A3632;
+  --sage-light: #EBF1EF;
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--bg-sand);
+  color: var(--text-main);
+  overflow-x: hidden;
+}
+
+.font-serif-luxury {
+  font-family: var(--font-luxury);
+}
+
+.font-script {
+  font-family: var(--font-script);
+}
+
+.font-sans-clean {
+  font-family: var(--font-sans);
+}
+
+/* Animações suaves */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Estilização da barra de rolagem */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #FAF7F2;
+}
+::-webkit-scrollbar-thumb {
+  background: #D5B895;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #A67C52;
+}
+
+/* Suporte a transições suaves */
+html {
+  scroll-behavior: smooth;
+}

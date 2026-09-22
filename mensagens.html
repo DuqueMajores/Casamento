@@ -1,0 +1,254 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mensagens & Solicitações de Presentes - Casamento Elisa & Sérgio</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Great+Vibes&family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet" />
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              'serif-luxury': ['Cormorant Garamond', 'Garamond', 'Georgia', 'serif'],
+              'script': ['Great Vibes', 'cursive'],
+              'sans-clean': ['Montserrat', 'sans-serif'],
+            }
+          }
+        }
+      }
+    </script>
+    
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body class="bg-[#FBF9F5] text-[#2C3437] antialiased">
+    <div class="min-h-screen py-8 sm:py-12 px-4 max-w-5xl mx-auto space-y-8">
+      
+      <!-- Top Navigation -->
+      <div class="flex flex-wrap items-center justify-between gap-4">
+        <a
+          href="./index.html"
+          class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white border border-[#E1D4C3] text-[#473B2E] text-xs font-semibold hover:bg-[#F8F2E8] transition-all shadow-xs cursor-pointer"
+        >
+          <i data-lucide="arrow-left" class="w-4 h-4"></i>
+          <span>Voltar ao Convite</span>
+        </a>
+
+        <div class="flex items-center gap-3">
+          <a
+            href="./convidados.html"
+            class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-[#FAF5EB] border border-[#D8C7B0] text-[#69543C] text-xs font-semibold hover:bg-[#F2E7D5] transition-all"
+          >
+            <i data-lucide="users" class="w-4 h-4"></i>
+            <span>Ver Lista de Convidados</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Header Banner -->
+      <div class="bg-white border-2 border-[#E7D7C1] rounded-3xl p-6 sm:p-8 shadow-sm">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
+          <div>
+            <span class="font-script text-3xl sm:text-4xl text-[#A67C52] block mb-1">
+              Recados & Carinho
+            </span>
+            <h1 class="font-serif-luxury text-3xl sm:text-4xl font-bold text-[#2A3430]">
+              Mural de Mensagens & Presentes
+            </h1>
+            <p class="text-xs sm:text-sm text-[#5B6B67] mt-1 font-sans-clean">
+              Recados deixados pelos convidados na confirmação de presença e presentes escolhidos.
+            </p>
+          </div>
+
+          <div class="flex items-center gap-2">
+            <button
+              type="button"
+              onclick="copyAllMessages()"
+              class="px-4 py-2.5 rounded-2xl bg-[#3D4C47] hover:bg-[#2B3833] text-white text-xs font-semibold shadow-md flex items-center gap-2 cursor-pointer"
+            >
+              <i data-lucide="copy" class="w-4 h-4 text-[#E6CDAC]"></i>
+              <span id="copy-all-btn">Copiar Todos os Recados</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Filters & Search -->
+      <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
+        <!-- Search Input -->
+        <div class="relative w-full sm:w-80">
+          <input
+            id="msg-search"
+            type="text"
+            placeholder="Buscar por convidado ou mensagem..."
+            oninput="renderMessagesList()"
+            class="w-full pl-10 pr-4 py-2.5 rounded-2xl bg-white border border-[#D8C7B0] text-xs text-[#2C3437] focus:outline-none focus:ring-2 focus:ring-[#3D4C47]"
+          />
+          <i data-lucide="search" class="w-4 h-4 text-[#8C765C] absolute left-3.5 top-3"></i>
+        </div>
+
+        <!-- Filter Chips -->
+        <div class="flex flex-wrap items-center gap-2 text-xs">
+          <button class="filter-btn px-4 py-2 rounded-full border border-[#D8C7B0] bg-[#3D4C47] text-white font-semibold cursor-pointer" onclick="filterMessages('all')">Todas</button>
+          <button class="filter-btn px-4 py-2 rounded-full border border-[#D8C7B0] bg-white text-[#56493A] hover:bg-[#FAF5EC] font-medium cursor-pointer" onclick="filterMessages('rsvp')">Recados do RSVP</button>
+          <button class="filter-btn px-4 py-2 rounded-full border border-[#D8C7B0] bg-white text-[#56493A] hover:bg-[#FAF5EC] font-medium cursor-pointer" onclick="filterMessages('gift')">Presentes Solicitados</button>
+        </div>
+      </div>
+
+      <!-- Messages Grid / List -->
+      <div id="messages-container" class="space-y-4">
+        <!-- Inserido dinamicamente via JS -->
+      </div>
+    </div>
+
+    <!-- SCRIPTS -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+    <script src="./firebase-config.js"></script>
+    <script src="./data.js"></script>
+    <script>
+      let currentMsgFilter = 'all';
+
+      document.addEventListener('DOMContentLoaded', async () => {
+        if (window.lucide) window.lucide.createIcons();
+        try {
+          await WeddingStorage.sync();
+          WeddingStorage.subscribe(() => renderMessagesList());
+          renderMessagesList();
+        } catch (error) {
+          console.error(error);
+          alert('Não foi possível conectar ao servidor compartilhado.');
+        }
+      });
+
+      function filterMessages(flt) {
+        currentMsgFilter = flt;
+        const buttons = document.querySelectorAll('.filter-btn');
+        buttons.forEach(btn => {
+          if ((flt === 'all' && btn.innerText === 'Todas') || (flt === 'rsvp' && btn.innerText.includes('RSVP')) || (flt === 'gift' && btn.innerText.includes('Presentes'))) {
+            btn.className = "filter-btn px-4 py-2 rounded-full border border-[#D8C7B0] bg-[#3D4C47] text-white font-semibold cursor-pointer";
+          } else {
+            btn.className = "filter-btn px-4 py-2 rounded-full border border-[#D8C7B0] bg-white text-[#56493A] hover:bg-[#FAF5EC] font-medium cursor-pointer";
+          }
+        });
+        renderMessagesList();
+      }
+
+      function renderMessagesList() {
+        const container = document.getElementById('messages-container');
+        if (!container) return;
+
+        const messages = WeddingStorage.getMessages();
+        const search = document.getElementById('msg-search').value.toLowerCase().trim();
+
+        const filtered = messages.filter(m => {
+          const matchType = currentMsgFilter === 'all' || m.source === currentMsgFilter;
+          const matchSearch = !search || m.authorName.toLowerCase().includes(search) || (m.message && m.message.toLowerCase().includes(search)) || (m.giftTitle && m.giftTitle.toLowerCase().includes(search));
+          return matchType && matchSearch;
+        });
+
+        if (filtered.length === 0) {
+          container.innerHTML = `
+            <div class="bg-white rounded-3xl border-2 border-[#E7D7C1] p-12 text-center space-y-3">
+              <div class="w-12 h-12 rounded-full bg-[#FAF5EB] text-[#A67C52] flex items-center justify-center mx-auto">
+                <i data-lucide="message-square" class="w-6 h-6"></i>
+              </div>
+              <h3 class="font-serif-luxury text-xl font-bold text-[#2A3430]">Nenhuma mensagem registrada ainda</h3>
+              <p class="text-xs text-[#6B7974] max-w-sm mx-auto">
+                Assim que os convidados confirmarem presença ou escolherem presentes no convite, os recados aparecerão aqui em tempo real!
+              </p>
+            </div>
+          `;
+          if (window.lucide) window.lucide.createIcons();
+          return;
+        }
+
+        container.innerHTML = filtered.map(m => {
+          const dateStr = m.createdAt ? new Date(m.createdAt).toLocaleDateString('pt-BR', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' }) : '';
+          const isGift = m.source === 'gift';
+
+          return `
+            <div class="bg-white rounded-3xl border-2 border-[#E7D7C1] p-5 sm:p-6 shadow-xs hover:shadow-md transition-all flex flex-col sm:flex-row items-start justify-between gap-4">
+              <div class="space-y-2 max-w-2xl">
+                <div class="flex items-center gap-2.5">
+                  <div class="w-8 h-8 rounded-full ${isGift ? 'bg-amber-100 text-amber-800' : 'bg-emerald-100 text-emerald-800'} flex items-center justify-center font-bold text-xs">
+                    ${m.authorName ? m.authorName.charAt(0).toUpperCase() : 'C'}
+                  </div>
+                  <div>
+                    <h4 class="font-serif-luxury text-lg font-bold text-[#2A3430] leading-none">${m.authorName}</h4>
+                    <span class="text-[10px] text-[#867562]">${dateStr}</span>
+                  </div>
+                  <span class="px-2.5 py-0.5 rounded-full text-[10px] font-semibold ${isGift ? 'bg-amber-50 border border-amber-200 text-amber-800' : 'bg-emerald-50 border border-emerald-200 text-emerald-800'}">
+                    ${m.sourceLabel || (isGift ? 'Presente' : 'RSVP')}
+                  </span>
+                </div>
+
+                ${isGift && m.giftTitle ? `
+                  <div class="p-3 bg-[#FAF7F2] rounded-xl border border-[#EBE1D0] flex items-center justify-between gap-2 text-xs">
+                    <span class="font-bold text-[#3D4C47]">${m.giftTitle}</span>
+                    <span class="font-bold text-[#8C6D48]">${m.giftPrice ? WeddingStorage.formatCurrency(m.giftPrice) : ''}</span>
+                  </div>
+                ` : ''}
+
+                <p class="text-xs sm:text-sm text-[#46534F] font-sans-clean leading-relaxed italic bg-[#FBF9F5] p-3 rounded-xl border border-[#EFE8DD]">
+                  "${m.message}"
+                </p>
+              </div>
+
+              <div class="flex items-center gap-2 self-end sm:self-center">
+                <button
+                  type="button"
+                  onclick="deleteMessageItem('${m.id}')"
+                  title="Excluir Mensagem"
+                  class="p-2 rounded-xl bg-stone-100 hover:bg-rose-100 text-stone-500 hover:text-rose-700 transition-colors cursor-pointer"
+                >
+                  <i data-lucide="trash-2" class="w-4 h-4"></i>
+                </button>
+              </div>
+            </div>
+          `;
+        }).join('');
+
+        if (window.lucide) window.lucide.createIcons();
+      }
+
+      async function deleteMessageItem(id) {
+        if (confirm('Deseja excluir esta mensagem do mural?')) {
+          try {
+            await WeddingStorage.deleteMessage(id);
+            renderMessagesList();
+          } catch (error) {
+            alert(error.message);
+          }
+        }
+      }
+
+      function copyAllMessages() {
+        const messages = WeddingStorage.getMessages();
+        if (messages.length === 0) {
+          alert('Não há mensagens para copiar.');
+          return;
+        }
+
+        const text = messages.map(m => `De: ${m.authorName}\nTipo: ${m.sourceLabel || m.source}\nMensagem: ${m.message}\n---`).join('\n\n');
+        navigator.clipboard.writeText(text);
+
+        const btn = document.getElementById('copy-all-btn');
+        if (btn) {
+          btn.innerText = 'Mensagens Copiadas!';
+          setTimeout(() => {
+            btn.innerText = 'Copiar Todos os Recados';
+          }, 2500);
+        }
+      }
+    </script>
+  </body>
+</html>

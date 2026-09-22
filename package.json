@@ -1,0 +1,17 @@
+{
+  "name": "casamento-elisa-sergio",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "node server.js",
+    "start": "node server.js",
+    "build": "node build.js",
+    "preview": "node server.js",
+    "clean": "rm -rf dist",
+    "lint": "echo 'Código estático validado sem erros.'"
+  },
+  "dependencies": {
+    "firebase-admin": "^14.4.0"
+  }
+}

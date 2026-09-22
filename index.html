@@ -1,0 +1,589 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Casamento Elisa & Sérgio</title>
+    <meta name="description" content="Convite de casamento simples, elegante e responsivo de Elisa & Sérgio com confirmação de presença online, catálogo de presentes, lista de convidados e mapas dos locais." />
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Great+Vibes&family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet" />
+    
+    <!-- Tailwind CSS (CDN para funcionamento 100% nativo no GitHub Pages sem Node/Vite) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              'serif-luxury': ['Cormorant Garamond', 'Garamond', 'Georgia', 'serif'],
+              'script': ['Great Vibes', 'cursive'],
+              'sans-clean': ['Montserrat', 'sans-serif'],
+            }
+          }
+        }
+      }
+    </script>
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <!-- Estilos personalizados -->
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body class="bg-[#FBF9F5] text-[#2C3437] antialiased selection:bg-[#D5B895] selection:text-[#2C3437]">
+
+    <!-- NAVBAR -->
+    <nav class="sticky top-0 z-40 bg-[#FAF7F2]/95 backdrop-blur-md border-b border-[#EBE1D0] transition-all">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
+        
+        <!-- Monograma / Brand -->
+        <a href="#inicio" class="flex items-center gap-2 text-left group">
+          <span class="w-9 h-9 rounded-full bg-[#3D4C47] text-[#FAF6EE] flex items-center justify-center font-serif-luxury text-lg font-medium shadow-sm group-hover:bg-[#2B3833] transition-colors">
+            E&S
+          </span>
+          <span class="font-serif-luxury text-xl sm:text-2xl text-[#2B3532] tracking-wide font-normal">
+            Elisa & Sérgio
+          </span>
+        </a>
+
+        <!-- Desktop Links -->
+        <div class="hidden md:flex items-center gap-6 text-xs font-sans-clean tracking-wider uppercase text-[#54625E] font-medium">
+          <a href="#inicio" class="hover:text-[#2B3532] transition-colors">Início</a>
+          <a href="#locais" class="hover:text-[#2B3532] transition-colors">Locais</a>
+          <a href="#confirmacao" class="hover:text-[#2B3532] transition-colors">Confirmar Presença</a>
+          <a href="#presentes" onclick="openGiftsCatalog()" class="hover:text-[#2B3532] transition-colors flex items-center gap-1 text-[#8E6D48]">
+            <i data-lucide="gift" class="w-3.5 h-3.5"></i>
+            <span>Presentes</span>
+          </a>
+          <a href="#traje" class="hover:text-[#2B3532] transition-colors">Traje</a>
+          
+          <a href="#confirmacao" class="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-[#3D4C47] hover:bg-[#2F3C38] text-white text-xs font-medium transition-all shadow-xs">
+            <i data-lucide="check" class="w-3 h-3"></i>
+            <span>RSVP</span>
+          </a>
+        </div>
+
+        <!-- Mobile Trigger -->
+        <div class="flex md:hidden items-center gap-2">
+          <button id="mobile-menu-btn" type="button" aria-label="Abrir menu" class="p-2 rounded-lg text-[#3D4C47] hover:bg-[#EFE7D8]">
+            <i data-lucide="menu" class="w-6 h-6"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Mobile Menu -->
+      <div id="mobile-menu" class="hidden md:hidden bg-[#FAF7F2] border-b border-[#EBE1D0] px-4 py-4 space-y-3 font-sans-clean text-xs uppercase tracking-wider text-[#475551]">
+        <a href="#inicio" class="block w-full text-left py-2 hover:text-[#2A3430]" onclick="toggleMobileMenu()">Início</a>
+        <a href="#locais" class="block w-full text-left py-2 hover:text-[#2A3430]" onclick="toggleMobileMenu()">Locais</a>
+        <a href="#confirmacao" class="block w-full text-left py-2 font-semibold text-[#2D3E39]" onclick="toggleMobileMenu()">Confirmar Presença (RSVP)</a>
+        <a href="#presentes" class="block w-full text-left py-2 text-[#8E6D48] font-semibold" onclick="openGiftsCatalog(); toggleMobileMenu();">Lista de Presentes</a>
+        <a href="#traje" class="block w-full text-left py-2 hover:text-[#2A3430]" onclick="toggleMobileMenu()">Traje dos Convidados</a>
+      </div>
+    </nav>
+
+    <!-- HERO SECTION -->
+    <section id="inicio" class="relative pt-6 sm:pt-10 pb-12 sm:pb-16 px-4 overflow-hidden text-center">
+
+      <!-- Decorative corner flowers -->
+      <div class="absolute top-0 left-0 w-32 sm:w-56 pointer-events-none opacity-85 select-none -translate-x-6 -translate-y-6">
+        <img
+          src="./public/assets/floral-quina.jpg"
+          alt="Flores em aquarela"
+          class="w-full h-full object-contain"
+        />
+      </div>
+
+      <div class="absolute top-0 right-0 w-32 sm:w-56 pointer-events-none opacity-85 select-none translate-x-6 -translate-y-6 transform scale-x-[-1]">
+        <img
+          src="./public/assets/floral-quina.jpg"
+          alt="Flores em aquarela"
+          class="w-full h-full object-contain"
+        />
+      </div>
+
+      <!-- Main Content Container -->
+      <div class="relative z-10 max-w-4xl mx-auto">
+        <!-- Top Blessing Badge -->
+        <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#FAF5EC] border border-[#E5D7C2] text-[#866645] text-xs font-sans-clean font-medium tracking-widest uppercase mb-4 shadow-sm">
+          <i data-lucide="heart" class="w-3.5 h-3.5 fill-current text-[#A67C52]"></i>
+          <span>Nosso Grande Dia</span>
+        </div>
+
+        <!-- Central Floral Garland -->
+        <div class="w-full max-w-md mx-auto my-2 px-6">
+          <img
+            src="./public/assets/floral-blue.jpg"
+            alt="Guirlanda floral aquarela"
+            class="w-full h-auto object-contain mx-auto drop-shadow-sm"
+          />
+        </div>
+
+        <!-- Couple Names -->
+        <h1 class="font-serif-luxury text-5xl sm:text-7xl md:text-8xl text-[#28322F] font-normal tracking-wide leading-none mt-2">
+          Elisa & Sérgio
+        </h1>
+
+        <!-- Scripture / Subtitle -->
+        <p class="font-sans-clean text-xs sm:text-sm md:text-base text-[#5C6A66] font-light max-w-lg mx-auto mt-4 leading-relaxed tracking-wide">
+          20 anos de uma história de amor
+        </p>
+
+        <!-- Date & Location Pill Cards -->
+        <div class="mt-8 flex flex-wrap items-center justify-center gap-4 text-left">
+          <div class="flex items-center gap-3 bg-white/90 border border-[#E9DFD0] px-5 py-3 rounded-2xl shadow-sm backdrop-blur-sm">
+            <div class="w-10 h-10 rounded-xl bg-[#F6F1E7] flex items-center justify-center text-[#8C6D4A]">
+              <i data-lucide="calendar" class="w-5 h-5"></i>
+            </div>
+            <div>
+              <p class="text-[10px] font-sans-clean uppercase tracking-wider text-[#8A7966] font-semibold">Data</p>
+              <p class="text-sm sm:text-base font-serif-luxury font-bold text-[#2A3431]">14 de Novembro de 2026</p>
+              <p class="text-[11px] text-[#697874]">Sábado • 16h00</p>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-3 bg-white/90 border border-[#E9DFD0] px-5 py-3 rounded-2xl shadow-sm backdrop-blur-sm">
+            <div class="w-10 h-10 rounded-xl bg-[#F6F1E7] flex items-center justify-center text-[#8C6D4A]">
+              <i data-lucide="map-pin" class="w-5 h-5"></i>
+            </div>
+            <div>
+              <p class="text-[10px] font-sans-clean uppercase tracking-wider text-[#8A7966] font-semibold">Cidade</p>
+              <p class="text-sm sm:text-base font-serif-luxury font-bold text-[#2A3431]">Praia do Sol & Casa Rústica</p>
+              <p class="text-[11px] text-[#697874]">São Pedro da Aldeia - RJ</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Countdown -->
+        <div class="mt-6">
+          <p class="text-xs uppercase tracking-widest text-[#8A7864] font-sans-clean font-semibold mb-3">
+            Contagem Regressiva para o Sim
+          </p>
+          <div id="countdown-timer" class="flex items-center justify-center gap-2 sm:gap-4 my-4 font-sans-clean">
+            <!-- Inserido dinamicamente via JS -->
+          </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="mt-8 flex flex-wrap items-center justify-center gap-3">
+          <a
+            href="#confirmacao"
+            class="px-7 py-3.5 rounded-full bg-[#3D4C47] hover:bg-[#2F3C38] text-white text-xs sm:text-sm font-sans-clean font-medium shadow-md hover:shadow-lg transition-all transform hover:-translate-y-0.5"
+          >
+            Confirmar Presença
+          </a>
+
+          <a
+            href="#locais"
+            class="px-6 py-3.5 rounded-full bg-[#FAF5EC] hover:bg-[#F2EADB] border border-[#DDD0BC] text-[#4E4133] text-xs sm:text-sm font-sans-clean font-medium transition-all shadow-sm"
+          >
+            Ver Locais & Rotas
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- COUPLE STORY SECTION (Foto real do casal na praia ao pôr do sol) -->
+    <section class="py-10 sm:py-16 px-4 max-w-5xl mx-auto">
+      <div class="relative rounded-3xl overflow-hidden shadow-2xl border-2 border-[#E7D6BD] bg-[#FAF6F0]">
+        <!-- Background Image with warm aesthetic overlay -->
+        <div class="relative w-full h-[420px] sm:h-[520px] md:h-[600px]">
+          <img
+            src="./public/assets/EeSnit.jpg"
+            alt="Elisa e Sérgio na praia ao pôr do sol"
+            class="w-full h-full object-cover object-[center_35%]"
+          />
+          
+          <!-- Subtle gradient overlays for elegance and typography readability -->
+          <div class="absolute inset-0 bg-gradient-to-t from-[#1C2320]/85 via-[#1C2320]/25 to-transparent"></div>
+          <div class="absolute inset-0 bg-gradient-to-r from-[#1C2320]/30 via-transparent to-[#1C2320]/20"></div>
+
+          <!-- Floating badge -->
+          <div class="absolute top-5 left-5 sm:top-6 sm:left-6">
+            <span class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white/95 backdrop-blur-md border border-[#D5C2A8] text-[#5A4531] text-[11px] font-sans-clean font-semibold uppercase tracking-wider shadow-sm">
+              <i data-lucide="heart" class="w-3.5 h-3.5 text-[#A67C52] fill-current"></i>
+              <span>Nossa História</span>
+            </span>
+          </div>
+
+          <!-- Bottom Text Card Content -->
+          <div class="absolute bottom-0 left-0 right-0 p-6 sm:p-10 text-white space-y-2">
+            <span class="font-script text-3xl sm:text-4xl text-[#E8D4B8] block">
+              O amor que nos uniu
+            </span>
+            <h2 class="font-serif-luxury text-2xl sm:text-4xl md:text-5xl font-normal leading-tight text-[#FAF7F2]">
+              
+            </h2>
+            <p class="sm:text-lg font-sans-clean text-[#D8E1DD] max-w-2xl leading-relaxed font-light pt-1">
+              Uma história construída com amor, cumplicidade, parceria e tantos momentos que nos trouxeram até aqui. Agora, celebramos um novo capítulo da nossa vida juntos: o nosso para sempre.
+            </p>
+
+            <div class="pt-3 flex items-center gap-4 text-xs font-sans-clean text-[#E8D4B8]">
+              <span class="font-medium tracking-wider uppercase">14 de Novembro de 2026</span>
+              <span>•</span>
+              <span>São Pedro da Aldeia - RJ</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- LOCAIS SECTION -->
+    <section id="locais" class="relative py-12 sm:py-16 px-4 max-w-5xl mx-auto">
+      <div class="text-center mb-10">
+        <span class="font-script text-3xl sm:text-4xl text-[#A67C52] block mb-1">
+          Onde & Quando
+        </span>
+        <h2 class="font-serif-luxury text-3xl sm:text-4xl text-[#2F3734] font-medium tracking-wide">
+          Locais do Casamento
+        </h2>
+        <div class="w-16 h-0.5 bg-[#D5B895] mx-auto mt-3 rounded-full"></div>
+        <p class="text-sm sm:text-base text-[#616E6A] font-sans-clean max-w-xl mx-auto mt-3">
+          Separamos todos os detalhes e rotas para que você chegue com facilidade e tranquilidade.
+        </p>
+      </div>
+
+      <!-- Tabs Switcher -->
+      <div class="flex justify-center mb-8">
+        <div class="inline-flex p-1.5 rounded-full bg-[#EFE9DF] border border-[#DDD3C2] shadow-inner">
+          <button
+            id="tab-btn-ceremony"
+            type="button"
+            onclick="switchLocationTab('ceremony')"
+            class="flex items-center gap-2 px-5 sm:px-7 py-2.5 rounded-full text-xs sm:text-sm font-sans-clean font-medium transition-all duration-300 bg-[#404F4A] text-[#FAF8F5] shadow-md"
+          >
+            <i data-lucide="compass" class="w-4 h-4"></i>
+            <span>1. Cerimônia (16h00)</span>
+          </button>
+
+          <button
+            id="tab-btn-reception"
+            type="button"
+            onclick="switchLocationTab('reception')"
+            class="flex items-center gap-2 px-5 sm:px-7 py-2.5 rounded-full text-xs sm:text-sm font-sans-clean font-medium transition-all duration-300 text-[#5C6763] hover:text-[#2C3437]"
+          >
+            <i data-lucide="compass" class="w-4 h-4"></i>
+            <span>2. Festa & Recepção (19h00)</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Location Card & Interactive Maps -->
+      <div id="location-card" class="bg-white border-2 border-[#E7D7C1] rounded-3xl p-6 sm:p-10 shadow-lg space-y-8 animate-fadeIn">
+        <!-- Inserido dinamicamente via JS -->
+      </div>
+    </section>
+
+    <!-- RSVP SECTION (CONFIRMAÇÃO DE PRESENÇA) -->
+    <section id="confirmacao" class="relative py-12 sm:py-16 px-4 max-w-3xl mx-auto">
+      <div class="bg-[#FFFFFF] border-2 border-[#E7D6BE] rounded-3xl p-6 sm:p-10 shadow-2xl relative overflow-hidden">
+        <!-- Floral watermark -->
+        <div class="absolute -top-12 -right-12 w-48 h-48 opacity-10 pointer-events-none">
+          <img
+            src="./public/assets/floral-quina.jpg"
+            alt="Decoração floral"
+            class="w-full h-full object-contain"
+          />
+        </div>
+
+        <div class="text-center mb-8">
+          <span class="font-script text-3xl sm:text-4xl text-[#A67C52] block mb-1">
+            Sua presença é essencial
+          </span>
+          <h2 class="font-serif-luxury text-3xl sm:text-4xl text-[#2C3437] font-semibold">
+            Confirmação de Presença
+          </h2>
+          <div class="w-16 h-0.5 bg-[#D5B895] mx-auto mt-2.5 mb-3 rounded-full"></div>
+          <p class="text-xs sm:text-sm text-[#5B6B66] font-sans-clean max-w-md mx-auto leading-relaxed">
+            Por gentileza, confirme sua presença até o dia <strong>05 de Outubro de 2026</strong> para organizarmos tudo com carinho.
+          </p>
+        </div>
+
+        <!-- Feedback Box -->
+        <div id="rsvp-success-box" class="hidden p-6 rounded-2xl bg-[#F4F9F6] border border-[#C5E1D4] text-center space-y-4 animate-fadeIn">
+          <div class="w-14 h-14 rounded-full bg-[#3D4C47] text-white flex items-center justify-center mx-auto shadow-md">
+            <i data-lucide="check-circle-2" class="w-8 h-8"></i>
+          </div>
+          <h3 class="font-serif-luxury text-2xl font-bold text-[#2A3430]">
+            Presença Confirmada!
+          </h3>
+          <p id="rsvp-success-msg" class="text-xs sm:text-sm text-[#465651] font-sans-clean leading-relaxed max-w-md mx-auto">
+            Agradecemos de coração pela sua resposta. Estamos muito felizes em compartilhar esse momento tão especial com você!
+          </p>
+          <button
+            type="button"
+            onclick="resetRsvpForm()"
+            class="px-5 py-2.5 rounded-full border border-[#B3C9C2] bg-white hover:bg-[#EBF3EF] text-[#2C3B37] text-xs font-semibold transition-all shadow-xs"
+          >
+            Enviar outra confirmação
+          </button>
+        </div>
+
+        <!-- RSVP Form -->
+        <form id="rsvp-form" onsubmit="submitRsvp(event)" class="space-y-6">
+          <div id="rsvp-error" class="hidden p-3.5 rounded-xl bg-red-50 border border-red-200 text-xs text-red-700"></div>
+
+          <!-- Name & Autocomplete -->
+          <div class="space-y-1.5 relative">
+            <label for="rsvp-name" class="block text-xs font-semibold text-[#44524E] tracking-wider uppercase">
+              Nome Completo do Convidado *
+            </label>
+            <div class="relative">
+              <input
+                id="rsvp-name"
+                type="text"
+                placeholder="Ex: João da Silva"
+                autocomplete="off"
+                oninput="handleRsvpNameInput(this.value)"
+                class="w-full px-4 py-3 rounded-2xl bg-[#FAF7F2] border border-[#D8C7B0] text-sm text-[#2C3437] focus:outline-none focus:ring-2 focus:ring-[#3D4C47] focus:bg-white transition-all pl-10"
+                required
+              />
+              <i data-lucide="user" class="w-4 h-4 text-[#8C765C] absolute left-3.5 top-3.5 pointer-events-none"></i>
+            </div>
+            <!-- Suggestions dropdown -->
+            <div id="rsvp-suggestions" class="hidden absolute left-0 right-0 top-full mt-1 bg-white border border-[#D8C7B0] rounded-2xl shadow-xl z-20 max-h-48 overflow-y-auto divide-y divide-stone-100"></div>
+          </div>
+
+          <!-- Email -->
+          <div class="space-y-1.5">
+            <label for="rsvp-email" class="block text-xs font-semibold text-[#44524E] tracking-wider uppercase">
+              Seu E-mail *
+            </label>
+            <div class="relative">
+              <input
+                id="rsvp-email"
+                type="email"
+                placeholder="exemplo@email.com"
+                class="w-full px-4 py-3 rounded-2xl bg-[#FAF7F2] border border-[#D8C7B0] text-sm text-[#2C3437] focus:outline-none focus:ring-2 focus:ring-[#3D4C47] focus:bg-white transition-all pl-10"
+                required
+              />
+              <i data-lucide="mail" class="w-4 h-4 text-[#8C765C] absolute left-3.5 top-3.5 pointer-events-none"></i>
+            </div>
+          </div>
+
+          <!-- Presença (Sim / Não) -->
+          <div class="space-y-2">
+            <label class="block text-xs font-semibold text-[#44524E] tracking-wider uppercase">
+              Você comparecerá ao casamento? *
+            </label>
+            <div class="grid grid-cols-2 gap-3">
+              <label class="cursor-pointer">
+                <input type="radio" name="rsvp-attending" value="yes" checked class="peer sr-only" />
+                <div class="p-3.5 rounded-2xl border-2 border-[#D8C7B0] bg-[#FAF8F4] text-center peer-checked:border-[#3D4C47] peer-checked:bg-[#EBF1EF] peer-checked:text-[#2A3632] transition-all flex items-center justify-center gap-2 font-medium text-xs sm:text-sm">
+                  <i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-600"></i>
+                  <span>Sim, com certeza!</span>
+                </div>
+              </label>
+
+              <label class="cursor-pointer">
+                <input type="radio" name="rsvp-attending" value="no" class="peer sr-only" />
+                <div class="p-3.5 rounded-2xl border-2 border-[#D8C7B0] bg-[#FAF8F4] text-center peer-checked:border-stone-500 peer-checked:bg-stone-100 peer-checked:text-stone-700 transition-all flex items-center justify-center gap-2 font-medium text-xs sm:text-sm">
+                  <i data-lucide="x-circle" class="w-4 h-4 text-rose-500"></i>
+                  <span>Não poderei ir</span>
+                </div>
+              </label>
+            </div>
+          </div>
+
+          <!-- Mensagem aos Noivos -->
+          <div class="space-y-1.5">
+            <label for="rsvp-message" class="block text-xs font-semibold text-[#44524E] tracking-wider uppercase">
+              Recado de Carinho para Elisa & Sérgio (Opcional)
+            </label>
+            <div class="relative">
+              <textarea
+                id="rsvp-message"
+                rows="3"
+                placeholder="Deixe seus votos, carinho e felicidade aos noivos..."
+                class="w-full px-4 py-3 rounded-2xl bg-[#FAF7F2] border border-[#D8C7B0] text-sm text-[#2C3437] focus:outline-none focus:ring-2 focus:ring-[#3D4C47] focus:bg-white transition-all pl-10"
+              ></textarea>
+              <i data-lucide="message-square" class="w-4 h-4 text-[#8C765C] absolute left-3.5 top-3.5 pointer-events-none"></i>
+            </div>
+          </div>
+
+          <button
+            type="submit"
+            class="w-full py-4 rounded-2xl bg-[#3D4C47] hover:bg-[#2A3632] text-white font-sans-clean font-semibold text-sm transition-all shadow-md hover:shadow-lg transform hover:-translate-y-0.5 cursor-pointer flex items-center justify-center gap-2"
+          >
+            <i data-lucide="check" class="w-4 h-4 text-[#E6CDAC]"></i>
+            <span>Confirmar Resposta</span>
+          </button>
+        </form>
+      </div>
+    </section>
+
+    <!-- GIFT CATALOG SECTION (CATÁLOGO DE PRESENTES) -->
+    <section id="presentes" class="py-10 sm:py-14 px-4 max-w-6xl mx-auto space-y-6">
+      <!-- Toggle Card Banner -->
+      <div class="bg-gradient-to-r from-[#FAF6EE] via-[#FFFFFF] to-[#FAF6EE] border-2 border-[#E3D4C0] rounded-3xl p-6 sm:p-8 shadow-sm text-center max-w-3xl mx-auto">
+        <span class="font-script text-3xl sm:text-4xl text-[#A67C52] block mb-1">
+          Carinho & Celebração
+        </span>
+        <h2 class="font-serif-luxury text-2xl sm:text-4xl text-[#2C3437] font-semibold">
+          Lista & Catálogo de Presentes
+        </h2>
+        <div class="w-16 h-0.5 bg-[#D5B895] mx-auto mt-2.5 mb-3 rounded-full"></div>
+        <p class="text-xs sm:text-sm text-[#5C6B67] font-sans-clean max-w-xl mx-auto leading-relaxed">
+          Sua presença é o nosso maior presente! Caso queira nos mimar com um item para a nossa casa ou experiências da lua de mel, clique no botão abaixo para abrir a nossa vitrine.
+        </p>
+
+        <!-- Toggle Button -->
+        <div class="mt-6 flex items-center justify-center">
+          <button
+            id="gifts-toggle-btn"
+            type="button"
+            onclick="toggleGiftsCatalog()"
+            class="group inline-flex items-center gap-2.5 px-7 py-3.5 rounded-2xl bg-[#3D4C47] hover:bg-[#2A3632] text-white text-xs sm:text-sm font-medium transition-all shadow-md hover:shadow-lg cursor-pointer transform hover:-translate-y-0.5"
+          >
+            <i data-lucide="gift" class="w-4 h-4 text-[#E6CDAC] group-hover:scale-110 transition-transform"></i>
+            <span id="gifts-toggle-label" class="font-semibold tracking-wide">Abrir Lista de Presentes</span>
+            <i id="gifts-toggle-icon" data-lucide="chevron-down" class="w-4 h-4 text-white transition-transform duration-300"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Collapsible Catalog Content -->
+      <div id="gifts-catalog-container" class="hidden space-y-8 animate-fadeIn pt-2">
+        <!-- Pix and Delivery Box -->
+        <div class="text-center max-w-2xl mx-auto space-y-3">
+          <div class="inline-flex flex-wrap items-center justify-center gap-3 bg-[#FAF6EF] border border-[#E4D7C3] px-4 py-2.5 rounded-2xl shadow-xs">
+            <div class="flex items-center gap-2 text-xs font-sans-clean text-[#4A3D2F]">
+              <span class="font-semibold">Chave Pix dos Noivos:</span>
+              <code id="pix-key-display" class="font-mono bg-white px-2 py-1 rounded-md border border-[#D5C7B2] text-[#2B3532]">
+                elisadiasrj011016@gmail.com
+              </code>
+            </div>
+            <button
+              type="button"
+              onclick="copyPixKey()"
+              class="px-3 py-1 rounded-lg bg-[#3D4C47] hover:bg-[#2B3733] text-white text-xs font-medium transition-colors flex items-center gap-1 cursor-pointer"
+            >
+              <i data-lucide="copy" class="w-3.5 h-3.5"></i>
+              <span id="copy-pix-label">Copiar Chave</span>
+            </button>
+          </div>
+
+          <p class="text-[11px] text-[#7A6B5B] font-sans-clean">
+            Prefere enviar um presente físico? Endereço de entrega:{' '}
+            <button
+              type="button"
+              onclick="copyDeliveryAddress()"
+              class="underline hover:text-[#3D4C47] font-medium cursor-pointer"
+            >
+              Copiar Endereço dos Noivos
+            </button>
+          </p>
+        </div>
+
+        <!-- Filter & Search Bar -->
+        <div class="flex flex-col sm:flex-row items-center justify-between gap-4 max-w-4xl mx-auto">
+
+          <!-- Search Input -->
+          <div class="relative w-full sm:w-64">
+            <input
+              id="gift-search-input"
+              type="text"
+              placeholder="Buscar presentes..."
+              oninput="renderGiftsGrid()"
+              class="w-full pl-9 pr-4 py-2 rounded-xl bg-white border border-[#D8C7B0] text-xs text-[#2C3437] focus:outline-none focus:ring-2 focus:ring-[#3D4C47] shadow-2xs"
+            />
+            <i data-lucide="search" class="w-3.5 h-3.5 text-[#8A7966] absolute left-3 top-2.5"></i>
+          </div>
+        </div>
+
+        <!-- Gifts Grid -->
+        <div id="gifts-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          <!-- Inserido dinamicamente via JS -->
+        </div>
+
+        <!-- Bottom close button -->
+        <div class="text-center pt-4">
+          <button
+            type="button"
+            onclick="toggleGiftsCatalog()"
+            class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-[#D5C7B2] bg-white hover:bg-[#FAF6EF] text-[#554737] text-xs font-medium transition-colors cursor-pointer shadow-xs"
+          >
+            <span>Fechar Catálogo de Presentes</span>
+            <i data-lucide="chevron-down" class="w-3.5 h-3.5 rotate-180 text-[#866D52]"></i>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- GIFT DETAIL MODAL -->
+    <div id="gift-modal" class="hidden fixed inset-0 bg-black/60 backdrop-blur-xs z-50 flex items-center justify-center p-4">
+      <div class="bg-white rounded-3xl p-6 sm:p-8 max-w-lg w-full shadow-2xl border border-[#E9DFD0] relative max-h-[90vh] overflow-y-auto">
+        <button
+          type="button"
+          onclick="closeGiftModal()"
+          class="absolute top-4 right-4 text-[#8A7966] hover:text-[#42372C] p-1.5 rounded-full hover:bg-[#FAF4EC] transition-colors cursor-pointer"
+        >
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+
+        <div id="gift-modal-content">
+          <!-- Renderizado via JS -->
+        </div>
+      </div>
+    </div>
+
+    <!-- DETAILS / DRESS CODE SECTION -->
+    <section id="traje" class="py-12 sm:py-16 px-4 max-w-4xl mx-auto space-y-12">
+      <div class="bg-[#FFFFFF] border-2 border-[#E7D7C1] rounded-3xl p-8 sm:p-12 shadow-lg text-center max-w-2xl mx-auto relative overflow-hidden">
+        <div class="w-12 h-12 rounded-full bg-[#FAF5EB] text-[#8E6D48] flex items-center justify-center mx-auto mb-4">
+          <i data-lucide="sparkles" class="w-6 h-6"></i>
+        </div>
+
+        <span class="font-script text-3xl sm:text-4xl text-[#A67C52] block mb-1">
+          Guia de Estilo
+        </span>
+        <h2 class="font-serif-luxury text-3xl sm:text-4xl text-[#2A3430] font-semibold mb-3">
+          Traje dos Convidados
+        </h2>
+        <div class="w-16 h-0.5 bg-[#D5B895] mx-auto mb-6 rounded-full"></div>
+
+        <p class="text-sm sm:text-base text-[#46534F] font-sans-clean leading-relaxed max-w-xl mx-auto">
+          Sugerimos o traje Esporte Fino / Passeio Praia sugerimos também que traga sua rasteirinha ou sandália de salto baixo / chinelo para ficar confortável.
+        </p>
+
+        <div class="mt-6 pt-6 border-t border-[#EFE5D5] flex items-center justify-center gap-2 text-xs text-[#8A7966] font-sans-clean">
+          <i data-lucide="heart" class="w-3.5 h-3.5 text-[#A67C52] fill-current"></i>
+          <span>O mais importante para nós é que você aproveite e celebre com muito conforto!</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="bg-[#242D2A] text-[#F3EFE7] py-12 px-4 border-t border-[#3A4944] text-center relative overflow-hidden">
+      <div class="max-w-4xl mx-auto space-y-4">
+        <div class="w-12 h-12 rounded-full border border-[#D5B895]/40 text-[#EAD8C3] mx-auto flex items-center justify-center font-serif-luxury text-xl">
+          E & S
+        </div>
+
+        <h3 class="font-serif-luxury text-2xl sm:text-3xl tracking-wider text-[#F7F4EE]">
+          Elisa & Sérgio
+        </h3>
+
+        <p class="text-xs sm:text-sm font-sans-clean text-[#B6C5C0] font-light max-w-md mx-auto">
+        </p>
+
+        <div class="w-12 h-0.5 bg-[#D5B895]/40 mx-auto my-3 rounded-full"></div>
+
+        <p class="text-[11px] font-sans-clean text-[#8E9F9A] flex items-center justify-center gap-1.5">
+          <span>Feito com carinho para celebrar nosso amor</span>
+          <i data-lucide="heart" class="w-3.5 h-3.5 text-[#D5B895] fill-current"></i>
+          <span>14 de Novembro de 2026 • São Pedro da Aldeia, RJ</span>
+        </p>
+      </div>
+    </footer>
+
+    <!-- SCRIPTS -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+    <script src="./firebase-config.js"></script>
+    <script src="./data.js"></script>
+    <script src="./app.js"></script>
+  </body>
+</html>
