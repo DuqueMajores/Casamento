@@ -313,7 +313,7 @@ async function submitRsvp(e) {
 
   errorBox.classList.add('hidden');
 
-  // Atualiza no localStorage
+  // Atualiza a lista compartilhada no arquivo JSON do servidor
   const guests = WeddingStorage.getGuests();
   const isAttending = attendingVal === 'yes';
   const status = isAttending ? 'Confirmado' : 'Ausente';
@@ -336,7 +336,7 @@ async function submitRsvp(e) {
       updatedAt: new Date().toISOString()
     });
   }
-  WeddingStorage.saveGuests(guests);
+  await WeddingStorage.saveGuests(guests);
 
   // Registra mensagem se preenchida
   if (personalMsg) {
@@ -615,7 +615,13 @@ async function confirmGiftDonation(e) {
     result = await WeddingStorage.createGiftIntent({
       authorName: donorName,
       message: donorMsg || 'Presente selecionado com muito carinho para os noivos.',
-      giftId: selectedGiftItem.id
+      giftId: selectedGiftItem.id,
+      giftTitle: selectedGiftItem.title,
+      giftPrice: selectedGiftItem.price,
+      giftCategory: selectedGiftItem.category,
+      linkConferir: selectedGiftItem.linkConferir,
+      imageUrl: selectedGiftItem.imageUrl,
+      description: selectedGiftItem.description
     });
   } catch (error) {
     renderGiftsGrid();

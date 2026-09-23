@@ -1,0 +1,9 @@
+{
+  "name": "casamento-elisa-sergio",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Convite de casamento com persistência em JSON no servidor",
+  "scripts": {
+    "start": "node server.js"
+  }
+}

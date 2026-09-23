@@ -321,108 +321,81 @@ const INITIAL_GUESTS = [
   { id: '62', name: 'Carlos Majores', invitationGroup: 'Família Noiva', type: 'Adulto', phone: '+5521982223344', status: 'Pendente' }
 ];
 
-// O site funciona sem servidor: dados e mensagens ficam no navegador do usuário.
-const STORAGE_KEYS = {
-  guests: 'casamento_elisa_sergio_guests_v1',
-  gifts: 'casamento_elisa_sergio_gifts_v1',
-  messages: 'casamento_elisa_sergio_messages_v1'
-};
-
-function readLocal(key, fallback) {
-  try {
-    const value = JSON.parse(localStorage.getItem(key));
-    return Array.isArray(value) ? value : fallback;
-  } catch {
-    return fallback;
-  }
-}
-
-function writeLocal(key, value) {
-  localStorage.setItem(key, JSON.stringify(value));
-}
-
-function createLocalId(prefix) {
-  return `${prefix}-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
-}
-
+// Persistência compartilhada: o navegador conversa com server.js, que grava data/store.json.
+// Não há estado de mensagens no navegador; qualquer ID consulta a mesma fonte no servidor.
 const WeddingStorage = {
-  gifts: readLocal(STORAGE_KEYS.gifts, INITIAL_GIFTS.map(gift => ({ ...gift }))),
-  messages: readLocal(STORAGE_KEYS.messages, []),
+  gifts: INITIAL_GIFTS.map(gift => ({ ...gift })),
+  messages: [],
+  guests: INITIAL_GUESTS.map(guest => ({ ...guest })),
   listeners: new Set(),
 
+  async request(path, options = {}) {
+    const response = await fetch(path, {
+      ...options,
+      headers: { 'Content-Type': 'application/json', ...(options.headers || {}) }
+    });
+    const body = await response.json().catch(() => ({}));
+    if (!response.ok) throw new Error(body.error || 'Não foi possível atualizar os dados.');
+    return body;
+  },
+
   async sync() {
-    this.gifts = readLocal(STORAGE_KEYS.gifts, INITIAL_GIFTS.map(gift => ({ ...gift })));
-    this.messages = readLocal(STORAGE_KEYS.messages, []);
+    try {
+      const state = await this.request('./api/state');
+      const reserved = new Map((state.reservedGifts || []).map(item => [item.giftId, item.messageId]));
+      this.gifts = INITIAL_GIFTS.map(gift => reserved.has(gift.id)
+        ? { ...gift, reserved: true, reservedByMessageId: reserved.get(gift.id) }
+        : { ...gift, reserved: false, reservedByMessageId: undefined });
+      this.messages = Array.isArray(state.messages) ? state.messages : [];
+      this.guests = Array.isArray(state.guests) && state.guests.length ? state.guests : INITIAL_GUESTS.map(guest => ({ ...guest }));
+    } catch (error) {
+      console.warn('API de persistência indisponível; usando dados iniciais nesta sessão.', error);
+    }
     this.notify();
     return this;
   },
 
-  notify() {
-    this.listeners.forEach(listener => listener({ gifts: this.gifts, messages: this.messages }));
-  },
+  notify() { this.listeners.forEach(listener => listener({ gifts: this.gifts, messages: this.messages })); },
 
   subscribe(listener) {
     this.listeners.add(listener);
-    const onStorage = event => {
-      if ([STORAGE_KEYS.gifts, STORAGE_KEYS.messages].includes(event.key)) {
-        this.gifts = readLocal(STORAGE_KEYS.gifts, this.gifts);
-        this.messages = readLocal(STORAGE_KEYS.messages, this.messages);
-        this.notify();
-      }
-    };
-    window.addEventListener('storage', onStorage);
-    return () => {
-      this.listeners.delete(listener);
-      window.removeEventListener('storage', onStorage);
-    };
+    return () => this.listeners.delete(listener);
   },
 
-  getGuests() { return readLocal(STORAGE_KEYS.guests, INITIAL_GUESTS.map(guest => ({ ...guest }))); },
-  saveGuests(guests) { writeLocal(STORAGE_KEYS.guests, guests); },
+  getGuests() { return this.guests; },
+  async saveGuests(guests) {
+    this.guests = guests;
+    await this.request('./api/guests', { method: 'PUT', body: JSON.stringify({ guests }) });
+  },
   getGifts() { return this.gifts; },
-  saveGifts(gifts) { this.gifts = gifts; writeLocal(STORAGE_KEYS.gifts, gifts); this.notify(); },
+  saveGifts(gifts) { this.gifts = gifts; this.notify(); },
   getMessages() { return this.messages; },
-  saveMessages(messages) { this.messages = messages; writeLocal(STORAGE_KEYS.messages, messages); this.notify(); },
+  saveMessages(messages) { this.messages = messages; this.notify(); },
 
   async addMessage(messageObj) {
-    const message = { id: createLocalId('message'), ...messageObj, createdAt: new Date().toISOString() };
-    this.saveMessages([message, ...this.messages]);
-    return message;
+    const result = await this.request('./api/messages', { method: 'POST', body: JSON.stringify(messageObj) });
+    this.messages = [result.message, ...this.messages];
+    this.notify();
+    return result.message;
   },
 
   async createGiftIntent(payload) {
-    const giftIndex = this.gifts.findIndex(gift => gift.id === payload.giftId);
-    if (giftIndex < 0) throw new Error('Presente não encontrado no catálogo.');
-    const gift = this.gifts[giftIndex];
-    if (gift.reserved) throw new Error('Este presente já está reservado.');
-
-    const message = {
-      id: createLocalId('message'),
-      authorName: String(payload.authorName || 'Convidado'),
-      message: String(payload.message || 'Presente selecionado com muito carinho para os noivos.'),
-      source: 'gift', sourceLabel: `Presente: ${gift.title}`, giftId: gift.id,
-      giftTitle: gift.title, giftPrice: gift.price, giftCategory: gift.category,
-      status: 'pendente', createdAt: new Date().toISOString()
-    };
-    const reservedGift = { ...gift, reserved: true, reservedByMessageId: message.id };
-    this.gifts = this.gifts.map((item, index) => index === giftIndex ? reservedGift : item);
-    this.messages = [message, ...this.messages];
-    writeLocal(STORAGE_KEYS.gifts, this.gifts);
-    writeLocal(STORAGE_KEYS.messages, this.messages);
+    const result = await this.request('./api/gift-intents', { method: 'POST', body: JSON.stringify(payload) });
+    this.messages = [result.message, ...this.messages.filter(item => item.id !== result.message.id)];
+    this.gifts = this.gifts.map(gift => gift.id === result.gift.id ? result.gift : gift);
     this.notify();
-    return { gift: reservedGift, message };
+    return result;
   },
 
   async deleteMessage(id) {
+    await this.request(`./api/messages/${encodeURIComponent(id)}`, { method: 'DELETE' });
     const message = this.messages.find(item => item.id === id);
     this.messages = this.messages.filter(item => item.id !== id);
     if (message?.source === 'gift' && message.giftId) {
       this.gifts = this.gifts.map(gift => gift.id === message.giftId
         ? { ...gift, reserved: false, reservedByMessageId: undefined }
         : gift);
-      writeLocal(STORAGE_KEYS.gifts, this.gifts);
     }
-    writeLocal(STORAGE_KEYS.messages, this.messages);
     this.notify();
     return { ok: true };
   },
