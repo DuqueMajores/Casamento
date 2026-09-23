@@ -4,6 +4,7 @@
   "private": true,
   "description": "Convite de casamento com persistência em JSON no servidor",
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "reset-guests": "node scripts/reset-guests.js"
   }
 }

@@ -20,3 +20,11 @@ Depois, abra `http://localhost:3000/` ou `http://localhost:3000/mensagens`.
 - A exclusão de uma mensagem usa `DELETE /api/messages/:id` e libera o presente correspondente.
 
 O projeto não contém mais chamadas a `localStorage` ou `sessionStorage`. Para produção, o processo Node precisa permanecer ativo e o arquivo `data/store.json` precisa estar em um volume com permissão de escrita.
+
+## Resetar convidados
+
+Para deixar todos os convidados como `Pendente` e remover mensagens e reservas de presentes, execute no servidor:
+
+```bash
+npm run reset-guests
+```
