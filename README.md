@@ -17,6 +17,7 @@ Depois, abra `http://localhost:3000/` ou `http://localhost:3000/mensagens`.
 - Ao clicar em **Registrar Intenção de Presente**, o navegador envia `POST /api/gift-intents`.
 - O servidor grava a mensagem e a reserva de forma compartilhada e retorna o resultado para a página.
 - A página `/mensagens` carrega os dados com `GET /api/state`.
+- A página `/convidados` também carrega o estado compartilhado e atualiza automaticamente a cada 10 segundos enquanto estiver aberta.
 - A exclusão de uma mensagem usa `DELETE /api/messages/:id` e libera o presente correspondente.
 
 O projeto não contém mais chamadas a `localStorage` ou `sessionStorage`. Para produção, o processo Node precisa permanecer ativo e o arquivo `data/store.json` precisa estar em um volume com permissão de escrita.

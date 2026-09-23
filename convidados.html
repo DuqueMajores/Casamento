@@ -208,10 +208,20 @@
     <script>
       let currentFilterStatus = 'all';
 
-      document.addEventListener('DOMContentLoaded', () => {
+      document.addEventListener('DOMContentLoaded', async () => {
         if (window.lucide) window.lucide.createIcons();
+        await WeddingStorage.sync();
+        WeddingStorage.subscribe(() => {
+          renderGuestsTable();
+          updateStats();
+        });
         renderGuestsTable();
         updateStats();
+
+        // Mantém o painel atualizado quando alguém confirma pelo celular.
+        setInterval(async () => {
+          if (document.visibilityState === 'visible') await WeddingStorage.sync();
+        }, 10000);
       });
 
       function updateStats() {
