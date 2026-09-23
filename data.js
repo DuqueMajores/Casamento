@@ -1,9 +1,3 @@
-const STORAGE_KEYS = {
-  GUESTS: 'wedding_guests_data_v2',
-  MESSAGES: 'wedding_guest_messages_v3_zero',
-  GIFTS: 'wedding_gifts_data_v1'
-};
-
 // Lista de presentes inicial
 const INITIAL_GIFTS = [
  {
@@ -116,7 +110,7 @@ const INITIAL_GIFTS = [
     linkConferir: 'https://meli.la/1VK3Z5g'
   },
   {
-    id: 'gift-casa-6',
+    id: 'gift-casa-7',
     title: 'Jogo de Fondue',
     category: 'Casa & Cozinha',
     price: 170,
@@ -125,7 +119,7 @@ const INITIAL_GIFTS = [
     linkConferir: 'https://meli.la/1MqVygG'
   },
   {
-    id: 'gift-casa-6',
+    id: 'gift-casa-8',
     title: 'Extratora Portátil Sofá',
     category: 'Eletrodomésticos',
     price: 507.12,
@@ -134,7 +128,7 @@ const INITIAL_GIFTS = [
     linkConferir: 'https://meli.la/1VCUeQX'
   },
   {
-    id: 'gift-casa-6',
+    id: 'gift-casa-9',
     title: 'Máquina de Café Expresso Dolce Gusto Nescafé',
     category: 'Eletrodomésticos',
     price: 650.98,
@@ -143,7 +137,7 @@ const INITIAL_GIFTS = [
     linkConferir: 'https://meli.la/1Eo46sJ'
   },
   {
-    id: 'gift-casa-6',
+    id: 'gift-casa-10',
     title: 'Batedeira Arno Planetária',
     category: 'Eletrodomésticos',
     price: 399.00,
@@ -152,7 +146,7 @@ const INITIAL_GIFTS = [
     linkConferir: 'https://meli.la/2LQjwoR'
   },
   {
-    id: 'gift-casa-6',
+    id: 'gift-casa-11',
     title: 'Panela de Pressão Rochedo',
     category: 'Casa & Cozinha',
     price: 349.19,
@@ -161,7 +155,7 @@ const INITIAL_GIFTS = [
     linkConferir: 'https://meli.la/1mPm6VZ'
   },
   {
-    id: 'gift-casa-6',
+    id: 'gift-casa-12',
     title: 'Jogo 6 Pratos para Pizza',
     category: 'Casa & Cozinha',
     price: 47.41,
@@ -170,7 +164,7 @@ const INITIAL_GIFTS = [
     linkConferir: 'https://meli.la/1MMPy3A'
   },
   {
-    id: 'gift-casa-6',
+    id: 'gift-casa-13',
     title: 'Kit Tijela Bowl Cambuca de Percelana',
     category: 'Casa & Cozinha',
     price: 157.83,
@@ -179,7 +173,7 @@ const INITIAL_GIFTS = [
     linkConferir: 'https://meli.la/1e6mroW'
   },
   {
-    id: 'gift-casa-6',
+    id: 'gift-casa-14',
     title: 'Conjunto Sobremesa de Vidro 12 Peças Egito',
     category: 'Casa & Cozinha',
     price: 51.90,
@@ -188,7 +182,7 @@ const INITIAL_GIFTS = [
     linkConferir: 'https://meli.la/2MVe3um'
   },
   {
-    id: 'gift-casa-6',
+    id: 'gift-casa-15',
     title: 'Boleira Tamanho M',
     category: 'Casa & Cozinha',
     price: 59.79,
@@ -197,7 +191,7 @@ const INITIAL_GIFTS = [
     linkConferir: 'https://meli.la/1436oJ8'
   },
   {
-    id: 'gift-casa-6',
+    id: 'gift-casa-16',
     title: 'Boleira Tamanho G s/pé',
     category: 'Casa & Cozinha',
     price: 58.90,
@@ -206,7 +200,7 @@ const INITIAL_GIFTS = [
     linkConferir: 'https://meli.la/1mr2LCB'
   },
   {
-    id: 'gift-casa-6',
+    id: 'gift-casa-17',
     title: 'Soundbars',
     category: 'Eletrodomésticos',
     price: 979.00,
@@ -215,7 +209,7 @@ const INITIAL_GIFTS = [
     linkConferir: 'https://meli.la/2EseVWu'
   },
   {
-    id: 'gift-casa-6',
+    id: 'gift-casa-18',
     title: 'Máquina de Gelo',
     category: 'Eletrodomésticos',
     price: 529.90,
@@ -224,7 +218,7 @@ const INITIAL_GIFTS = [
     linkConferir: 'https://meli.la/23aHs3v'
   },
   {
-    id: 'gift-casa-6',
+    id: 'gift-casa-19',
     title: 'Cortina Corta Luz Cores Neutras',
     category: 'Casa & Sala',
     price: 112.76,
@@ -233,7 +227,7 @@ const INITIAL_GIFTS = [
     linkConferir: 'https://meli.la/2fzgwA2'
   },
   {
-    id: 'gift-casa-6',
+    id: 'gift-casa-20',
     title: 'Panela de Pipoca Tramontina',
     category: 'Casa & Cozinha',
     price: 175.40,
@@ -242,7 +236,7 @@ const INITIAL_GIFTS = [
     linkConferir: 'https://meli.la/2EtT13N'
   },
   {
-    id: 'gift-casa-6',
+    id: 'gift-casa-21',
     title: 'Frutadeira de Chão',
     category: 'Casa & Cozinha',
     price: 113.98,
@@ -251,7 +245,7 @@ const INITIAL_GIFTS = [
     linkConferir: 'https://meli.la/1ioJi4y'
   },
   {
-    id: 'gift-casa-6',
+    id: 'gift-casa-22',
     title: 'Mixer Eletrolux 3 em 1 ',
     category: 'Casa & Cozinha',
     price: 326.36,
@@ -327,118 +321,109 @@ const INITIAL_GUESTS = [
   { id: '62', name: 'Carlos Majores', invitationGroup: 'Família Noiva', type: 'Adulto', phone: '+5521982223344', status: 'Pendente' }
 ];
 
-// O conteúdo dos cards vem sempre deste arquivo.
-// O Firestore guarda somente o status de reserva e as mensagens compartilhadas.
-function giftsFromFirestore(snapshot) {
-  const remoteGifts = new Map(
-    snapshot.docs.map(doc => [doc.id, doc.data()])
-  );
+// O site funciona sem servidor: dados e mensagens ficam no navegador do usuário.
+const STORAGE_KEYS = {
+  guests: 'casamento_elisa_sergio_guests_v1',
+  gifts: 'casamento_elisa_sergio_gifts_v1',
+  messages: 'casamento_elisa_sergio_messages_v1'
+};
 
-  return INITIAL_GIFTS.map(localGift => {
-    const remoteGift = remoteGifts.get(localGift.id);
-    return {
-      ...localGift,
-      reserved: remoteGift ? Boolean(remoteGift.reserved) : Boolean(localGift.reserved),
-      ...(remoteGift && remoteGift.reservedByMessageId
-        ? { reservedByMessageId: remoteGift.reservedByMessageId }
-        : {})
-    };
-  });
+function readLocal(key, fallback) {
+  try {
+    const value = JSON.parse(localStorage.getItem(key));
+    return Array.isArray(value) ? value : fallback;
+  } catch {
+    return fallback;
+  }
+}
+
+function writeLocal(key, value) {
+  localStorage.setItem(key, JSON.stringify(value));
+}
+
+function createLocalId(prefix) {
+  return `${prefix}-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
 }
 
 const WeddingStorage = {
-  gifts: INITIAL_GIFTS.map(gift => ({ ...gift })),
-  messages: [],
-  giftsUnsubscribe: null,
-  messagesUnsubscribe: null,
+  gifts: readLocal(STORAGE_KEYS.gifts, INITIAL_GIFTS.map(gift => ({ ...gift }))),
+  messages: readLocal(STORAGE_KEYS.messages, []),
   listeners: new Set(),
 
   async sync() {
-    const [giftsSnapshot, messagesSnapshot] = await Promise.all([
-      firestore.collection('giftcards').get(),
-      firestore.collection('messages').orderBy('createdAt', 'desc').get()
-    ]);
-    this.applyState({
-      gifts: giftsFromFirestore(giftsSnapshot),
-      messages: messagesSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }))
-    });
+    this.gifts = readLocal(STORAGE_KEYS.gifts, INITIAL_GIFTS.map(gift => ({ ...gift })));
+    this.messages = readLocal(STORAGE_KEYS.messages, []);
+    this.notify();
     return this;
   },
 
-  applyState(state) {
-    this.gifts = Array.isArray(state.gifts) ? state.gifts : [];
-    this.messages = Array.isArray(state.messages) ? state.messages : [];
-    this.listeners.forEach(listener => listener(state));
+  notify() {
+    this.listeners.forEach(listener => listener({ gifts: this.gifts, messages: this.messages }));
   },
 
   subscribe(listener) {
     this.listeners.add(listener);
-    if (!this.giftsUnsubscribe) {
-      this.giftsUnsubscribe = firestore.collection('giftcards').onSnapshot(snapshot => {
-        this.gifts = giftsFromFirestore(snapshot);
-        this.listeners.forEach(currentListener => currentListener({ gifts: this.gifts, messages: this.messages }));
-      });
-      this.messagesUnsubscribe = firestore.collection('messages').orderBy('createdAt', 'desc').onSnapshot(snapshot => {
-        this.messages = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-        this.listeners.forEach(currentListener => currentListener({ gifts: this.gifts, messages: this.messages }));
-      });
-    }
-    return () => this.listeners.delete(listener);
+    const onStorage = event => {
+      if ([STORAGE_KEYS.gifts, STORAGE_KEYS.messages].includes(event.key)) {
+        this.gifts = readLocal(STORAGE_KEYS.gifts, this.gifts);
+        this.messages = readLocal(STORAGE_KEYS.messages, this.messages);
+        this.notify();
+      }
+    };
+    window.addEventListener('storage', onStorage);
+    return () => {
+      this.listeners.delete(listener);
+      window.removeEventListener('storage', onStorage);
+    };
   },
 
-  getGuests() { return INITIAL_GUESTS; },
-  saveGuests() {},
+  getGuests() { return readLocal(STORAGE_KEYS.guests, INITIAL_GUESTS.map(guest => ({ ...guest }))); },
+  saveGuests(guests) { writeLocal(STORAGE_KEYS.guests, guests); },
   getGifts() { return this.gifts; },
-  saveGifts() {},
+  saveGifts(gifts) { this.gifts = gifts; writeLocal(STORAGE_KEYS.gifts, gifts); this.notify(); },
   getMessages() { return this.messages; },
-  saveMessages() {},
+  saveMessages(messages) { this.messages = messages; writeLocal(STORAGE_KEYS.messages, messages); this.notify(); },
 
   async addMessage(messageObj) {
-    const ref = await firestore.collection('messages').add({
-      ...messageObj,
-      createdAt: firebase.firestore.FieldValue.serverTimestamp()
-    });
-    return { id: ref.id, ...messageObj };
+    const message = { id: createLocalId('message'), ...messageObj, createdAt: new Date().toISOString() };
+    this.saveMessages([message, ...this.messages]);
+    return message;
   },
 
   async createGiftIntent(payload) {
-    const giftRef = firestore.collection('giftcards').doc(payload.giftId);
-    const messageRef = firestore.collection('messages').doc();
-    let result;
-    await firestore.runTransaction(async transaction => {
-      const giftSnapshot = await transaction.get(giftRef);
-      if (!giftSnapshot.exists) throw new Error('Giftcard não encontrado.');
-      const gift = giftSnapshot.data();
-      if (gift.reserved) throw new Error('Este giftcard já está reservado.');
-      const message = {
-        authorName: payload.authorName,
-        message: payload.message || 'Presente selecionado com muito carinho para os noivos.',
-        source: 'gift', sourceLabel: `Presente: ${gift.title}`, giftId: payload.giftId,
-        giftTitle: gift.title, giftPrice: gift.price, giftCategory: gift.category,
-        status: 'pendente', createdAt: firebase.firestore.FieldValue.serverTimestamp()
-      };
-      transaction.set(messageRef, message);
-      transaction.update(giftRef, { reserved: true, reservedByMessageId: messageRef.id });
-      result = { gift: { id: giftSnapshot.id, ...gift, reserved: true, reservedByMessageId: messageRef.id }, message: { id: messageRef.id, ...message } };
-    });
-    return result;
+    const giftIndex = this.gifts.findIndex(gift => gift.id === payload.giftId);
+    if (giftIndex < 0) throw new Error('Presente não encontrado no catálogo.');
+    const gift = this.gifts[giftIndex];
+    if (gift.reserved) throw new Error('Este presente já está reservado.');
+
+    const message = {
+      id: createLocalId('message'),
+      authorName: String(payload.authorName || 'Convidado'),
+      message: String(payload.message || 'Presente selecionado com muito carinho para os noivos.'),
+      source: 'gift', sourceLabel: `Presente: ${gift.title}`, giftId: gift.id,
+      giftTitle: gift.title, giftPrice: gift.price, giftCategory: gift.category,
+      status: 'pendente', createdAt: new Date().toISOString()
+    };
+    const reservedGift = { ...gift, reserved: true, reservedByMessageId: message.id };
+    this.gifts = this.gifts.map((item, index) => index === giftIndex ? reservedGift : item);
+    this.messages = [message, ...this.messages];
+    writeLocal(STORAGE_KEYS.gifts, this.gifts);
+    writeLocal(STORAGE_KEYS.messages, this.messages);
+    this.notify();
+    return { gift: reservedGift, message };
   },
 
   async deleteMessage(id) {
-    const messageRef = firestore.collection('messages').doc(id);
-    await firestore.runTransaction(async transaction => {
-      const messageSnapshot = await transaction.get(messageRef);
-      if (!messageSnapshot.exists) return;
-      const message = messageSnapshot.data();
-      if (message.source === 'gift' && message.giftId) {
-        const giftRef = firestore.collection('giftcards').doc(message.giftId);
-        const giftSnapshot = await transaction.get(giftRef);
-        if (giftSnapshot.exists && giftSnapshot.data().reservedByMessageId === id) {
-          transaction.update(giftRef, { reserved: false, reservedByMessageId: firebase.firestore.FieldValue.delete() });
-        }
-      }
-      transaction.delete(messageRef);
-    });
+    const message = this.messages.find(item => item.id === id);
+    this.messages = this.messages.filter(item => item.id !== id);
+    if (message?.source === 'gift' && message.giftId) {
+      this.gifts = this.gifts.map(gift => gift.id === message.giftId
+        ? { ...gift, reserved: false, reservedByMessageId: undefined }
+        : gift);
+      writeLocal(STORAGE_KEYS.gifts, this.gifts);
+    }
+    writeLocal(STORAGE_KEYS.messages, this.messages);
+    this.notify();
     return { ok: true };
   },
 

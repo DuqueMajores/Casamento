@@ -48,15 +48,10 @@ document.addEventListener('DOMContentLoaded', async () => {
   // Renderiza locais
   renderLocationCard();
 
-  try {
-    await WeddingStorage.sync();
-    WeddingStorage.subscribe(() => {
-      if (isGiftsOpen) renderGiftsGrid();
-    });
-  } catch (error) {
-    console.error(error);
-    alert('Não foi possível conectar ao servidor compartilhado.');
-  }
+  await WeddingStorage.sync();
+  WeddingStorage.subscribe(() => {
+    if (isGiftsOpen) renderGiftsGrid();
+  });
 
   // Mobile menu button
   const mobileBtn = document.getElementById('mobile-menu-btn');
@@ -649,6 +644,17 @@ async function confirmGiftDonation(e) {
         <p class="text-xs sm:text-sm text-[#54625E] font-sans-clean leading-relaxed max-w-sm mx-auto">
           Sua intenção de presentear <strong>${selectedGiftItem.title}</strong> foi enviada para Elisa & Sérgio. Agradecemos imensamente por esse gesto de carinho!
         </p>
+        ${selectedGiftItem.linkConferir ? `
+          <a
+            href="${selectedGiftItem.linkConferir}"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-flex items-center justify-center gap-2 px-6 py-2.5 rounded-full bg-[#A67C52] text-white text-xs font-semibold shadow-sm cursor-pointer"
+          >
+            <i data-lucide="external-link" class="w-4 h-4"></i>
+            Conferir o presente
+          </a>
+        ` : ''}
         <button
           type="button"
           onclick="closeGiftModal()"

@@ -110,23 +110,15 @@
     </div>
 
     <!-- SCRIPTS -->
-    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-    <script src="./firebase-config.js"></script>
     <script src="./data.js"></script>
     <script>
       let currentMsgFilter = 'all';
 
-      document.addEventListener('DOMContentLoaded', async () => {
+      document.addEventListener('DOMContentLoaded', () => {
         if (window.lucide) window.lucide.createIcons();
-        try {
-          await WeddingStorage.sync();
-          WeddingStorage.subscribe(() => renderMessagesList());
-          renderMessagesList();
-        } catch (error) {
-          console.error(error);
-          alert('Não foi possível conectar ao servidor compartilhado.');
-        }
+        WeddingStorage.sync();
+        WeddingStorage.subscribe(() => renderMessagesList());
+        renderMessagesList();
       });
 
       function filterMessages(flt) {
