@@ -6,11 +6,15 @@ const crypto = require('node:crypto');
 const ROOT = __dirname;
 const DATA_DIR = path.join(ROOT, 'data');
 const STORE_FILE = path.join(DATA_DIR, 'store.json');
+const INITIAL_GUESTS_FILE = path.join(DATA_DIR, 'initial-guests.json');
 const PORT = Number(process.env.PORT || 3000);
 
 fs.mkdirSync(DATA_DIR, { recursive: true });
+const initialGuests = fs.existsSync(INITIAL_GUESTS_FILE)
+  ? JSON.parse(fs.readFileSync(INITIAL_GUESTS_FILE, 'utf8'))
+  : [];
 if (!fs.existsSync(STORE_FILE)) {
-  fs.writeFileSync(STORE_FILE, JSON.stringify({ guests: [], messages: [], reservedGifts: [] }, null, 2) + '\n');
+  fs.writeFileSync(STORE_FILE, JSON.stringify({ guests: initialGuests, messages: [], reservedGifts: [] }, null, 2) + '\n');
 }
 
 function readStore() {
@@ -26,6 +30,20 @@ function writeStore(store) {
   const temporary = `${STORE_FILE}.tmp`;
   fs.writeFileSync(temporary, JSON.stringify(store, null, 2) + '\n');
   fs.renameSync(temporary, STORE_FILE);
+}
+
+function mergeInitialGuests(store) {
+  const existing = new Map((store.guests || []).map(guest => [guest.name.toLowerCase(), guest]));
+  let changed = false;
+  for (const guest of initialGuests) {
+    const key = guest.name.toLowerCase();
+    if (!existing.has(key)) {
+      store.guests.push(guest);
+      changed = true;
+    }
+  }
+  if (changed) writeStore(store);
+  return store;
 }
 
 function id(prefix) {
@@ -57,7 +75,7 @@ function clean(value, fallback = '') {
 }
 
 async function api(req, res, url) {
-  const store = readStore();
+  const store = mergeInitialGuests(readStore());
 
   if (req.method === 'GET' && url.pathname === '/api/state') {
     return json(res, 200, { messages: store.messages, guests: store.guests, reservedGifts: store.reservedGifts });

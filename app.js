@@ -684,7 +684,7 @@ function copyPixKeyModal() {
 }
 
 function copyDeliveryAddress() {
-  const fullAddress = 'Aos cuidados de Elisa & Sérgio\nAv. Copacabana, 166 - Praia Linda\nSão Pedro da Aldeia - RJ, CEP: 28940-000';
+  const fullAddress = 'Aos cuidados de Elisa & Sérgio\nRua Pedro Américo, travessa Teódes Correa, 6 - Baleia, São Pedro da Aldeia';
   navigator.clipboard.writeText(fullAddress);
   alert('Endereço de entrega copiado para a área de transferência!');
 }
