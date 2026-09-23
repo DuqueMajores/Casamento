@@ -327,6 +327,7 @@ const WeddingStorage = {
   gifts: INITIAL_GIFTS.map(gift => ({ ...gift })),
   messages: [],
   guests: INITIAL_GUESTS.map(guest => ({ ...guest })),
+  syncError: null,
   listeners: new Set(),
 
   async request(path, options = {}) {
@@ -348,7 +349,9 @@ const WeddingStorage = {
         : { ...gift, reserved: false, reservedByMessageId: undefined });
       this.messages = Array.isArray(state.messages) ? state.messages : [];
       this.guests = Array.isArray(state.guests) && state.guests.length ? state.guests : INITIAL_GUESTS.map(guest => ({ ...guest }));
+      this.syncError = null;
     } catch (error) {
+      this.syncError = error;
       console.warn('API de persistência indisponível; usando dados iniciais nesta sessão.', error);
     }
     this.notify();
@@ -363,6 +366,12 @@ const WeddingStorage = {
   },
 
   getGuests() { return this.guests; },
+  async saveRsvp(payload) {
+    const result = await this.request('./api/rsvp', { method: 'POST', body: JSON.stringify(payload) });
+    this.guests = result.guests;
+    this.notify();
+    return result.guest;
+  },
   async saveGuests(guests) {
     this.guests = guests;
     await this.request('./api/guests', { method: 'PUT', body: JSON.stringify({ guests }) });

@@ -313,30 +313,17 @@ async function submitRsvp(e) {
 
   errorBox.classList.add('hidden');
 
-  // Atualiza a lista compartilhada no arquivo JSON do servidor
-  const guests = WeddingStorage.getGuests();
   const isAttending = attendingVal === 'yes';
   const status = isAttending ? 'Confirmado' : 'Ausente';
 
-  const existingGuest = guests.find(g => g.name.toLowerCase() === name.toLowerCase());
-  if (existingGuest) {
-    existingGuest.status = status;
-    existingGuest.email = email;
-    existingGuest.rsvpNotes = personalMsg || undefined;
-    existingGuest.updatedAt = new Date().toISOString();
-  } else {
-    guests.push({
-      id: String(Date.now()),
-      name: name,
-      invitationGroup: name,
-      type: 'Adulto',
-      email: email,
-      status: status,
-      rsvpNotes: personalMsg || undefined,
-      updatedAt: new Date().toISOString()
-    });
+  try {
+    // Atualização atômica no servidor: não usa a cópia da lista mantida no celular.
+    await WeddingStorage.saveRsvp({ name, email, status, rsvpNotes: personalMsg });
+  } catch (error) {
+    errorBox.innerText = `${error.message} Verifique se o site está publicado como Web Service no Render.`;
+    errorBox.classList.remove('hidden');
+    return;
   }
-  await WeddingStorage.saveGuests(guests);
 
   // Registra mensagem se preenchida
   if (personalMsg) {

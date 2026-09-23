@@ -66,6 +66,9 @@
             <p class="text-xs sm:text-sm text-[#5B6B67] mt-1 font-sans-clean">
               Painel para acompanhamento e confirmação de presenças dos noivos Elisa & Sérgio.
             </p>
+            <p id="guests-sync-status" class="text-[10px] text-[#8A7966] mt-3 font-semibold">
+              Verificando conexão com o servidor...
+            </p>
           </div>
 
           <button
@@ -214,15 +217,29 @@
         WeddingStorage.subscribe(() => {
           renderGuestsTable();
           updateStats();
+          updateSyncStatus();
         });
         renderGuestsTable();
         updateStats();
+        updateSyncStatus();
 
         // Mantém o painel atualizado quando alguém confirma pelo celular.
         setInterval(async () => {
           if (document.visibilityState === 'visible') await WeddingStorage.sync();
         }, 10000);
       });
+
+      function updateSyncStatus() {
+        const status = document.getElementById('guests-sync-status');
+        if (!status) return;
+        if (WeddingStorage.syncError) {
+          status.innerText = 'Não conectado ao servidor. Confirmações não serão compartilhadas.';
+          status.className = 'text-[10px] text-rose-700 mt-3 font-semibold';
+        } else {
+          status.innerText = 'Lista sincronizada com o servidor';
+          status.className = 'text-[10px] text-emerald-700 mt-3 font-semibold';
+        }
+      }
 
       function updateStats() {
         const guests = WeddingStorage.getGuests();

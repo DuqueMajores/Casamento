@@ -63,6 +63,24 @@ async function api(req, res, url) {
     return json(res, 200, { messages: store.messages, guests: store.guests, reservedGifts: store.reservedGifts });
   }
 
+  if (req.method === 'POST' && url.pathname === '/api/rsvp') {
+    const body = await readBody(req);
+    const name = clean(body.name);
+    if (!name) return json(res, 400, { error: 'Nome do convidado não informado.' });
+
+    const status = body.status === 'Confirmado' ? 'Confirmado' : 'Ausente';
+    const now = new Date().toISOString();
+    const index = store.guests.findIndex(guest => guest.name.toLowerCase() === name.toLowerCase());
+    const guest = index >= 0
+      ? { ...store.guests[index], status, email: clean(body.email), rsvpNotes: clean(body.rsvpNotes), updatedAt: now }
+      : { id: id('guest'), name, invitationGroup: name, type: 'Adulto', email: clean(body.email), rsvpNotes: clean(body.rsvpNotes), status, updatedAt: now };
+
+    if (index >= 0) store.guests[index] = guest;
+    else store.guests.push(guest);
+    writeStore(store);
+    return json(res, 200, { guest, guests: store.guests });
+  }
+
   if (req.method === 'PUT' && url.pathname === '/api/guests') {
     const body = await readBody(req);
     store.guests = Array.isArray(body.guests) ? body.guests : store.guests;
@@ -152,7 +170,10 @@ function staticFile(req, res, url) {
   if (pathname === '/convidados') pathname = '/convidados.html';
   const file = path.normalize(path.join(ROOT, pathname));
   if (!file.startsWith(ROOT) || !fs.existsSync(file) || fs.statSync(file).isDirectory()) return json(res, 404, { error: 'Arquivo não encontrado.' });
-  res.writeHead(200, { 'Content-Type': MIME[path.extname(file).toLowerCase()] || 'application/octet-stream' });
+  res.writeHead(200, {
+    'Content-Type': MIME[path.extname(file).toLowerCase()] || 'application/octet-stream',
+    'Cache-Control': 'no-store, no-cache, must-revalidate'
+  });
   fs.createReadStream(file).pipe(res);
 }
 
