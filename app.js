@@ -614,7 +614,6 @@ async function confirmGiftDonation(e) {
 
   const donorName = nameInput ? nameInput.value.trim() : 'Convidado';
   const donorMsg = msgInput ? msgInput.value.trim() : '';
-  const externalWindow = gift.linkConferir ? window.open('about:blank', '_blank') : null;
 
   let result;
   try {
@@ -631,8 +630,7 @@ async function confirmGiftDonation(e) {
 
   // Abre o link individual configurado no giftcard após o registro.
   if (result.gift.linkConferir) {
-    if (externalWindow) externalWindow.location.href = result.gift.linkConferir;
-    else window.open(result.gift.linkConferir, '_blank', 'noopener,noreferrer');
+    window.open(result.gift.linkConferir, '_blank', 'noopener,noreferrer');
   }
 
   selectedGiftItem = result.gift;
