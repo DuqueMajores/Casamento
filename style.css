@@ -97,6 +97,33 @@ body.video-gate-open {
   object-fit: contain;
   background: #101614;
 }
+.video-intro__sound {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  padding: 0.85rem 1.2rem;
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  border-radius: 999px;
+  color: #fff;
+  background: rgba(16, 22, 20, 0.65);
+  backdrop-filter: blur(5px);
+  font: 600 0.8rem var(--font-sans);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: transform 0.25s ease, background 0.25s ease;
+}
+.video-intro__sound.is-hidden {
+  display: none;
+}
+.video-intro__sound:hover,
+.video-intro__sound:focus-visible {
+  background: rgba(16, 22, 20, 0.9);
+  transform: translate(-50%, -50%) scale(1.04);
+  outline: 2px solid #e8d4b8;
+  outline-offset: 4px;
+}
 .video-intro__skip {
   position: absolute;
   top: max(1rem, env(safe-area-inset-top));

@@ -65,11 +65,11 @@ document.addEventListener('DOMContentLoaded', async () => {
 function setupVideoIntro() {
   const intro = document.getElementById('video-intro');
   const video = document.getElementById('intro-video');
+  const soundButton = document.getElementById('video-intro-sound');
   const skipButton = document.getElementById('video-intro-skip');
-  if (!intro || !video || !skipButton) return;
+  if (!intro || !video || !soundButton || !skipButton) return;
 
   document.body.classList.add('video-gate-open');
-  video.muted = true;
   video.autoplay = true;
 
   const closeIntro = () => {
@@ -78,11 +78,23 @@ function setupVideoIntro() {
     document.body.classList.remove('video-gate-open');
   };
 
+  const enableSound = () => {
+    video.muted = false;
+    video.volume = 1;
+    soundButton.classList.add('is-hidden');
+    video.play().catch(() => {
+      soundButton.classList.remove('is-hidden');
+    });
+  };
+
+  soundButton.addEventListener('click', enableSound);
   skipButton.addEventListener('click', closeIntro);
   video.addEventListener('ended', closeIntro, { once: true });
-  video.play().catch(() => {
-    // Autoplay pode ser bloqueado por alguma política específica do navegador.
-    // O botão Pular continua disponível para liberar o convite.
+  video.play().then(() => {
+    soundButton.classList.add('is-hidden');
+  }).catch(() => {
+    // Navegadores podem bloquear autoplay com áudio; um clique libera o som.
+    soundButton.classList.remove('is-hidden');
   });
 }
 

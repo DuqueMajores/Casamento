@@ -34,9 +34,13 @@
     <link rel="stylesheet" href="./style.css" />
   </head>
   <body class="bg-[#FBF9F5] text-[#2C3437] antialiased selection:bg-[#D5B895] selection:text-[#2C3437]">
-    <!-- Abertura: o vídeo começa automaticamente sem som para respeitar o autoplay dos navegadores -->
+    <!-- Abertura: o vídeo tenta começar com áudio; se o navegador bloquear o autoplay,
+         o visitante pode ativar o som pelo botão exibido sobre o vídeo. -->
     <section id="video-intro" class="video-intro" aria-label="Abertura em vídeo">
-      <video id="intro-video" class="video-intro__player" autoplay muted playsinline preload="auto" src="./public/media/video-Elisa%26Sergio.mp4"></video>
+      <video id="intro-video" class="video-intro__player" autoplay playsinline preload="auto" src="./public/media/video-Elisa%26Sergio.mp4"></video>
+      <button id="video-intro-sound" class="video-intro__sound" type="button" aria-label="Ativar som do vídeo">
+        Ativar som
+      </button>
       <button id="video-intro-skip" class="video-intro__skip" type="button" aria-label="Pular vídeo de abertura">
         Pular vídeo
       </button>
