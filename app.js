@@ -34,6 +34,7 @@ const LOCATIONS = {
 };
 
 document.addEventListener('DOMContentLoaded', async () => {
+  setupVideoIntro();
   // Inicializa ícones Lucide
   if (window.lucide) {
     window.lucide.createIcons();
@@ -59,6 +60,32 @@ document.addEventListener('DOMContentLoaded', async () => {
     mobileBtn.addEventListener('click', toggleMobileMenu);
   }
 });
+
+// Mantém o convite bloqueado até o visitante iniciar e concluir o vídeo.
+function setupVideoIntro() {
+  const intro = document.getElementById('video-intro');
+  const video = document.getElementById('intro-video');
+  const trigger = document.getElementById('video-intro-trigger');
+  if (!intro || !video || !trigger) return;
+
+  document.body.classList.add('video-gate-open');
+  video.pause();
+
+  const startVideo = () => {
+    video.play().then(() => {
+      trigger.classList.add('hidden');
+    }).catch(() => {
+      trigger.classList.remove('hidden');
+    });
+  };
+
+  trigger.addEventListener('click', startVideo);
+  video.addEventListener('click', startVideo);
+  video.addEventListener('ended', () => {
+    intro.classList.add('is-hidden');
+    document.body.classList.remove('video-gate-open');
+  }, { once: true });
+}
 
 // Suporte para rotas no GitHub Pages e caminhos locais
 function handleDirectRoutes() {
