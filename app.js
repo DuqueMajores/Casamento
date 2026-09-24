@@ -61,30 +61,29 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 });
 
-// Mantém o convite bloqueado até o visitante iniciar e concluir o vídeo.
+// Mantém o convite bloqueado até o vídeo terminar ou o visitante tocar em Pular vídeo.
 function setupVideoIntro() {
   const intro = document.getElementById('video-intro');
   const video = document.getElementById('intro-video');
-  const trigger = document.getElementById('video-intro-trigger');
-  if (!intro || !video || !trigger) return;
+  const skipButton = document.getElementById('video-intro-skip');
+  if (!intro || !video || !skipButton) return;
 
   document.body.classList.add('video-gate-open');
-  video.pause();
+  video.muted = true;
+  video.autoplay = true;
 
-  const startVideo = () => {
-    video.play().then(() => {
-      trigger.classList.add('hidden');
-    }).catch(() => {
-      trigger.classList.remove('hidden');
-    });
-  };
-
-  trigger.addEventListener('click', startVideo);
-  video.addEventListener('click', startVideo);
-  video.addEventListener('ended', () => {
+  const closeIntro = () => {
+    video.pause();
     intro.classList.add('is-hidden');
     document.body.classList.remove('video-gate-open');
-  }, { once: true });
+  };
+
+  skipButton.addEventListener('click', closeIntro);
+  video.addEventListener('ended', closeIntro, { once: true });
+  video.play().catch(() => {
+    // Autoplay pode ser bloqueado por alguma política específica do navegador.
+    // O botão Pular continua disponível para liberar o convite.
+  });
 }
 
 // Suporte para rotas no GitHub Pages e caminhos locais

@@ -34,22 +34,17 @@
     <link rel="stylesheet" href="./style.css" />
   </head>
   <body class="bg-[#FBF9F5] text-[#2C3437] antialiased selection:bg-[#D5B895] selection:text-[#2C3437]">
-    <!-- Abertura: o vídeo só começa após um toque/clique do visitante -->
+    <!-- Abertura: o vídeo começa automaticamente sem som para respeitar o autoplay dos navegadores -->
     <section id="video-intro" class="video-intro" aria-label="Abertura em vídeo">
-      <video id="intro-video" class="video-intro__player" playsinline preload="auto" src="./public/media/video-Elisa%26Sergio.mp4"></video>
-      <button id="video-intro-trigger" class="video-intro__trigger" type="button" aria-label="Tocar vídeo de abertura">
-        <span class="video-intro__play-icon" aria-hidden="true">▶</span>
-        <span>Toque para começar</span>
+      <video id="intro-video" class="video-intro__player" autoplay muted playsinline preload="auto" src="./public/media/video-Elisa%26Sergio.mp4"></video>
+      <button id="video-intro-skip" class="video-intro__skip" type="button" aria-label="Pular vídeo de abertura">
+        Pular vídeo
       </button>
     </section>
 
     <!-- Primeira tela do convite após o vídeo: imagem inteira, sem corte -->
     <section id="invitation-photo" class="invitation-photo" aria-label="Foto de Elisa e Sérgio">
-      <img src="./public/media/elisa-sergio.jpeg" alt="Elisa e Sérgio" class="invitation-photo__image" />
-      <div class="invitation-photo__hint" aria-hidden="true">
-        <span>Arraste para cima</span>
-        <span class="invitation-photo__arrow">↑</span>
-      </div>
+      <img style="width: 100vw;" src="./public/media/elisa-sergio.jpeg" alt="Elisa e Sérgio" class="invitation-photo__image" />
     </section>
 
     <!-- NAVBAR -->
@@ -58,12 +53,7 @@
         
         <!-- Monograma / Brand -->
         <a href="#inicio" class="flex items-center gap-2 text-left group">
-          <span class="w-9 h-9 rounded-full bg-[#3D4C47] text-[#FAF6EE] flex items-center justify-center font-serif-luxury text-lg font-medium shadow-sm group-hover:bg-[#2B3833] transition-colors">
-            E&S
-          </span>
-          <span class="font-serif-luxury text-xl sm:text-2xl text-[#2B3532] tracking-wide font-normal">
-            Elisa & Sérgio
-          </span>
+          
         </a>
 
         <!-- Desktop Links -->
