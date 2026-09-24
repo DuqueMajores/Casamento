@@ -2,9 +2,12 @@
   "name": "casamento-elisa-sergio",
   "version": "1.0.0",
   "private": true,
-  "description": "Convite de casamento com persistência em JSON no servidor",
+  "description": "Convite de casamento com persistência em Postgres no Render e JSON local em desenvolvimento",
   "scripts": {
     "start": "node server.js",
     "reset-guests": "node scripts/reset-guests.js"
+  },
+  "dependencies": {
+    "pg": "^8.16.3"
   }
 }
