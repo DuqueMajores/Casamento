@@ -101,10 +101,12 @@ body.video-gate-open {
   position: absolute;
   left: 50%;
   top: 50%;
+  width: 76px;
+  height: 76px;
   transform: translate(-50%, -50%);
-  padding: 0.85rem 1.2rem;
+  padding: 0;
   border: 1px solid rgba(255, 255, 255, 0.7);
-  border-radius: 999px;
+  border-radius: 50%;
   color: #fff;
   background: rgba(16, 22, 20, 0.65);
   backdrop-filter: blur(5px);
@@ -119,7 +121,7 @@ body.video-gate-open {
 }
 .video-intro__sound:hover,
 .video-intro__sound:focus-visible {
-  background: rgba(16, 22, 20, 0.9);
+  background: gray;
   transform: translate(-50%, -50%) scale(1.04);
   outline: 2px solid #e8d4b8;
   outline-offset: 4px;
