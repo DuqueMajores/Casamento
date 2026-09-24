@@ -203,8 +203,44 @@ function staticFile(req, res, url) {
   if (pathname === '/convidados') pathname = '/convidados.html';
   const file = path.normalize(path.join(ROOT, pathname));
   if (!file.startsWith(ROOT) || !fs.existsSync(file) || fs.statSync(file).isDirectory()) return json(res, 404, { error: 'Arquivo não encontrado.' });
-  res.writeHead(200, { 'Content-Type': MIME[path.extname(file).toLowerCase()] || 'application/octet-stream', 'Cache-Control': 'no-store, no-cache, must-revalidate' });
-  fs.createReadStream(file).pipe(res);
+  const stat = fs.statSync(file);
+  const size = stat.size;
+  const type = MIME[path.extname(file).toLowerCase()] || 'application/octet-stream';
+  const headers = {
+    'Content-Type': type,
+    'Content-Length': size,
+    'Accept-Ranges': 'bytes',
+    'Cache-Control': 'public, max-age=31536000, immutable'
+  };
+
+  const range = req.headers.range;
+  if (!range) {
+    res.writeHead(200, headers);
+    fs.createReadStream(file).pipe(res);
+    return;
+  }
+
+  const match = /^bytes=(\d*)-(\d*)$/.exec(range);
+  if (!match) {
+    res.writeHead(416, { 'Content-Range': `bytes */${size}` });
+    res.end();
+    return;
+  }
+  let start = match[1] ? Number(match[1]) : Math.max(0, size - Number(match[2] || 0));
+  let end = match[2] ? Number(match[2]) : size - 1;
+  if (!Number.isInteger(start) || !Number.isInteger(end) || start < 0 || start > end || start >= size) {
+    res.writeHead(416, { 'Content-Range': `bytes */${size}` });
+    res.end();
+    return;
+  }
+  end = Math.min(end, size - 1);
+  const chunkSize = end - start + 1;
+  res.writeHead(206, {
+    ...headers,
+    'Content-Length': chunkSize,
+    'Content-Range': `bytes ${start}-${end}/${size}`
+  });
+  fs.createReadStream(file, { start, end }).pipe(res);
 }
 
 const server = http.createServer(async (req, res) => {
