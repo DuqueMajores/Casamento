@@ -196,6 +196,7 @@ async function readStoreForUpdate(client) {
 }
 
 const MIME = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.css': 'text/css; charset=utf-8', '.json': 'application/json; charset=utf-8', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.png': 'image/png', '.webp': 'image/webp', '.svg': 'image/svg+xml', '.mp4': 'video/mp4' };
+const REVALIDATE_EXTENSIONS = new Set(['.html', '.js', '.css', '.json']);
 function staticFile(req, res, url) {
   let pathname = decodeURIComponent(url.pathname);
   if (pathname === '/' || pathname === '/index.html') pathname = '/index.html';
@@ -210,7 +211,10 @@ function staticFile(req, res, url) {
     'Content-Type': type,
     'Content-Length': size,
     'Accept-Ranges': 'bytes',
-    'Cache-Control': 'public, max-age=31536000, immutable'
+    // HTML/CSS/JS não têm nomes versionados; não podem ficar immutable após um deploy.
+    'Cache-Control': REVALIDATE_EXTENSIONS.has(path.extname(file).toLowerCase())
+      ? 'no-cache, must-revalidate'
+      : 'public, max-age=31536000, immutable'
   };
 
   const range = req.headers.range;

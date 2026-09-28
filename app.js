@@ -4,6 +4,7 @@ let currentGiftsCategory = 'Todas';
 let isGiftsOpen = false;
 let selectedGiftItem = null;
 let activeLocation = 'ceremony';
+const PIX_KEY = 'elisadiasrj011016@gmail.com';
 
 // Dados dos Locais
 const LOCATIONS = {
@@ -558,7 +559,7 @@ function openGiftModal(giftId) {
           <span class="text-[10px] text-[#866F56]">Sem taxas adicionais</span>
         </div>
         <div class="flex items-center justify-between gap-2 bg-white px-3 py-2 rounded-xl border border-[#D5C7B2]">
-          <code class="text-xs font-mono text-[#2B3532] truncate">elisadiasrj011016@gmail.com</code>
+          <code class="text-xs font-mono text-[#2B3532] truncate">${PIX_KEY}</code>
           <button
             type="button"
             onclick="copyPixKeyModal()"
@@ -700,7 +701,9 @@ async function confirmGiftDonation(e) {
 }
 
 function copyPixKey() {
-  navigator.clipboard.writeText('elisadiasrj011016@gmail.com');
+  const display = document.getElementById('pix-key-display');
+  const key = display?.textContent.trim() || PIX_KEY;
+  navigator.clipboard.writeText(key);
   const label = document.getElementById('copy-pix-label');
   if (label) {
     label.innerText = 'Copiado!';
@@ -711,7 +714,9 @@ function copyPixKey() {
 }
 
 function copyPixKeyModal() {
-  navigator.clipboard.writeText('elisadiasrj011016@gmail.com');
+  const modalKey = document.querySelector('#gift-modal-content code');
+  const key = modalKey?.textContent.trim() || PIX_KEY;
+  navigator.clipboard.writeText(key);
   const label = document.getElementById('modal-pix-label');
   if (label) {
     label.innerText = 'Copiado!';
