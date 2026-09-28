@@ -700,7 +700,7 @@ async function confirmGiftDonation(e) {
 }
 
 function copyPixKey() {
-  navigator.clipboard.writeText('duque.majores@gmail.com');
+  navigator.clipboard.writeText('elisadiasrj011016@gmail.com');
   const label = document.getElementById('copy-pix-label');
   if (label) {
     label.innerText = 'Copiado!';
@@ -711,7 +711,7 @@ function copyPixKey() {
 }
 
 function copyPixKeyModal() {
-  navigator.clipboard.writeText('duque.majores@gmail.com');
+  navigator.clipboard.writeText('elisadiasrj011016@gmail.com');
   const label = document.getElementById('modal-pix-label');
   if (label) {
     label.innerText = 'Copiado!';
@@ -722,7 +722,7 @@ function copyPixKeyModal() {
 }
 
 function copyDeliveryAddress() {
-  const fullAddress = 'Aos cuidados de Elisa & Sérgio\nRua Pedro Américo, travessa Teódes Correa, 6 - Baleia, São Pedro da Aldeia';
+  const fullAddress = 'Rua Pedro Américo, travessa Teódes Correa, 6 - Baleia, São Pedro da Aldeia';
   navigator.clipboard.writeText(fullAddress);
   alert('Endereço de entrega copiado para a área de transferência!');
 }
