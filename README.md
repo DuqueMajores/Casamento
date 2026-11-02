@@ -1,34 +1,17 @@
 # Casamento Elisa & Sérgio
 
-O convite usa um pequeno servidor Node.js e uma API compartilhada. Em produção, os dados são armazenados em Postgres por meio da variável `DATABASE_URL`; localmente, sem essa variável, o projeto usa `data/store.json`.
+Convite de casamento estático, feito em HTML, CSS e JavaScript puro para publicação no GitHub Pages. Não há servidor, banco de dados, API ou serviço de hospedagem externo.
 
-## Executar
+## Publicação
 
-```bash
-npm start
-```
+O conteúdo da pasta raiz pode ser publicado diretamente pelo GitHub Pages, usando a branch `main` e a pasta `/ (root)` como fonte. O site não precisa de build nem de instalação de dependências.
 
-Depois, abra `http://localhost:3000/` ou `http://localhost:3000/mensagens`.
+## Funcionamento
 
-## Como funciona
+- `index.html` é a página principal do convite.
+- `convidados.html` e `mensagens.html` são páginas auxiliares estáticas.
+- As confirmações, mensagens e reservas de presentes são salvas no `localStorage` do navegador.
+- Como não existe backend, esses dados são locais ao navegador e não são compartilhados entre visitantes ou dispositivos.
+- Os mapas, fontes, ícones e imagens externas continuam sendo carregados pelo navegador quando a página é aberta.
 
-- `server.js` serve os arquivos estáticos e disponibiliza a API em `/api`.
-- Com `DATABASE_URL`, a tabela `wedding_state` guarda `messages`, `reservedGifts` e `guests` em armazenamento persistente.
-- Sem `DATABASE_URL`, `data/store.json` é usado apenas para desenvolvimento local.
-- Ao clicar em **Registrar Intenção de Presente**, o navegador envia `POST /api/gift-intents`.
-- O servidor grava a mensagem e a reserva de forma compartilhada e retorna o resultado para a página.
-- A página `/mensagens` carrega os dados com `GET /api/state`.
-- A página `/convidados` também carrega o estado compartilhado e atualiza automaticamente a cada 10 segundos enquanto estiver aberta.
-- A lista inicial contém os 94 convidados da planilha (84 adultos e 10 crianças). O servidor migra automaticamente convidados que ainda não existirem no `store.json` persistente.
-- A exclusão de uma mensagem usa `DELETE /api/messages/:id` e libera o presente correspondente.
-- A reserva de presente usa transação com lock no Postgres, impedindo reservas duplicadas simultâneas.
-
-O projeto não contém chamadas a `localStorage` ou `sessionStorage`. Para publicar no Render, crie um banco **Render Postgres** e adicione a variável `DATABASE_URL` ao Web Service (ou use a opção de conexão automática do banco). Na primeira inicialização, o servidor cria a tabela e migra o `data/store.json` existente somente se a tabela estiver vazia. Não dependa do disco local do Render para guardar dados.
-
-## Resetar convidados
-
-Para deixar todos os convidados como `Pendente` e remover mensagens e reservas de presentes, execute no servidor:
-
-```bash
-npm run reset-guests
-```
+Para testar localmente, abra `index.html` em um navegador ou use qualquer servidor HTTP estático.

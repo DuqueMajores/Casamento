@@ -961,44 +961,56 @@ const INITIAL_GUESTS = [
   }
 ];
 
-// Persistência compartilhada: o navegador conversa com server.js, que grava data/store.json.
-// Não há estado de mensagens no navegador; qualquer ID consulta a mesma fonte no servidor.
+// Persistência local do navegador: o site funciona sem servidor ou API.
+// Cada navegador mantém suas próprias confirmações, mensagens e reservas.
+const STORAGE_KEY = 'casamento-elisa-sergio-state-v1';
+
+function createLocalId(prefix) {
+  return `${prefix}-${Date.now()}-${Math.random().toString(16).slice(2)}`;
+}
+
+function readBrowserState() {
+  try {
+    const raw = window.localStorage.getItem(STORAGE_KEY);
+    const state = raw ? JSON.parse(raw) : {};
+    return {
+      gifts: Array.isArray(state.gifts) && state.gifts.length ? state.gifts : INITIAL_GIFTS.map(gift => ({ ...gift })),
+      messages: Array.isArray(state.messages) ? state.messages : [],
+      guests: Array.isArray(state.guests) && state.guests.length ? state.guests : INITIAL_GUESTS.map(guest => ({ ...guest }))
+    };
+  } catch (error) {
+    console.warn('Não foi possível ler o armazenamento local; usando os dados iniciais.', error);
+    return { gifts: INITIAL_GIFTS.map(gift => ({ ...gift })), messages: [], guests: INITIAL_GUESTS.map(guest => ({ ...guest })) };
+  }
+}
+
 const WeddingStorage = {
-  gifts: INITIAL_GIFTS.map(gift => ({ ...gift })),
-  messages: [],
-  guests: INITIAL_GUESTS.map(guest => ({ ...guest })),
+  ...readBrowserState(),
   syncError: null,
   listeners: new Set(),
 
-  async request(path, options = {}) {
-    const response = await fetch(path, {
-      ...options,
-      headers: { 'Content-Type': 'application/json', ...(options.headers || {}) }
-    });
-    const body = await response.json().catch(() => ({}));
-    if (!response.ok) throw new Error(body.error || 'Não foi possível atualizar os dados.');
-    return body;
+  persist() {
+    try {
+      window.localStorage.setItem(STORAGE_KEY, JSON.stringify({ gifts: this.gifts, messages: this.messages, guests: this.guests }));
+    } catch (error) {
+      console.warn('Não foi possível salvar os dados neste navegador.', error);
+    }
   },
 
   async sync() {
-    try {
-      const state = await this.request('./api/state');
-      const reserved = new Map((state.reservedGifts || []).map(item => [item.giftId, item.messageId]));
-      this.gifts = INITIAL_GIFTS.map(gift => reserved.has(gift.id)
-        ? { ...gift, reserved: true, reservedByMessageId: reserved.get(gift.id) }
-        : { ...gift, reserved: false, reservedByMessageId: undefined });
-      this.messages = Array.isArray(state.messages) ? state.messages : [];
-      this.guests = Array.isArray(state.guests) && state.guests.length ? state.guests : INITIAL_GUESTS.map(guest => ({ ...guest }));
-      this.syncError = null;
-    } catch (error) {
-      this.syncError = error;
-      console.warn('API de persistência indisponível; usando dados iniciais nesta sessão.', error);
-    }
+    const state = readBrowserState();
+    this.gifts = state.gifts;
+    this.messages = state.messages;
+    this.guests = state.guests;
+    this.syncError = null;
     this.notify();
     return this;
   },
 
-  notify() { this.listeners.forEach(listener => listener({ gifts: this.gifts, messages: this.messages })); },
+  notify() {
+    this.persist();
+    this.listeners.forEach(listener => listener({ gifts: this.gifts, messages: this.messages, guests: this.guests }));
+  },
 
   subscribe(listener) {
     this.listeners.add(listener);
@@ -1006,38 +1018,59 @@ const WeddingStorage = {
   },
 
   getGuests() { return this.guests; },
+
   async saveRsvp(payload) {
-    const result = await this.request('./api/rsvp', { method: 'POST', body: JSON.stringify(payload) });
-    this.guests = result.guests;
+    const name = String(payload.name || '').trim();
+    const now = new Date().toISOString();
+    const index = this.guests.findIndex(guest => String(guest.name).toLowerCase() === name.toLowerCase());
+    const guest = index >= 0
+      ? { ...this.guests[index], status: payload.status, email: payload.email || '', rsvpNotes: payload.rsvpNotes || '', updatedAt: now }
+      : { id: createLocalId('guest'), name, invitationGroup: name, type: 'Adulto', email: payload.email || '', rsvpNotes: payload.rsvpNotes || '', status: payload.status, updatedAt: now };
+    if (index >= 0) this.guests[index] = guest;
+    else this.guests.push(guest);
     this.notify();
-    return result.guest;
+    return guest;
   },
+
   async saveGuests(guests) {
     this.guests = guests;
-    await this.request('./api/guests', { method: 'PUT', body: JSON.stringify({ guests }) });
+    this.notify();
   },
+
   getGifts() { return this.gifts; },
   saveGifts(gifts) { this.gifts = gifts; this.notify(); },
   getMessages() { return this.messages; },
   saveMessages(messages) { this.messages = messages; this.notify(); },
 
   async addMessage(messageObj) {
-    const result = await this.request('./api/messages', { method: 'POST', body: JSON.stringify(messageObj) });
-    this.messages = [result.message, ...this.messages];
+    const message = { ...messageObj, id: createLocalId('message'), createdAt: new Date().toISOString() };
+    this.messages = [message, ...this.messages];
     this.notify();
-    return result.message;
+    return message;
   },
 
   async createGiftIntent(payload) {
-    const result = await this.request('./api/gift-intents', { method: 'POST', body: JSON.stringify(payload) });
-    this.messages = [result.message, ...this.messages.filter(item => item.id !== result.message.id)];
-    this.gifts = this.gifts.map(gift => gift.id === result.gift.id ? result.gift : gift);
+    const gift = this.gifts.find(item => item.id === payload.giftId);
+    if (!gift) throw new Error('Presente não encontrado.');
+    if (gift.reserved) throw new Error('Este presente já está reservado neste navegador.');
+    const message = await this.addMessage({
+      authorName: payload.authorName || 'Convidado',
+      message: payload.message || 'Presente selecionado com muito carinho para os noivos.',
+      source: 'gift',
+      sourceLabel: `Presente: ${payload.giftTitle || gift.title}`,
+      giftId: gift.id,
+      giftTitle: payload.giftTitle || gift.title,
+      giftPrice: Number(payload.giftPrice || gift.price) || 0,
+      giftCategory: payload.giftCategory || gift.category,
+      status: 'pendente'
+    });
+    const reservedGift = { ...gift, reserved: true, reservedByMessageId: message.id };
+    this.gifts = this.gifts.map(item => item.id === gift.id ? reservedGift : item);
     this.notify();
-    return result;
+    return { message, gift: reservedGift };
   },
 
   async deleteMessage(id) {
-    await this.request(`./api/messages/${encodeURIComponent(id)}`, { method: 'DELETE' });
     const message = this.messages.find(item => item.id === id);
     this.messages = this.messages.filter(item => item.id !== id);
     if (message?.source === 'gift' && message.giftId) {
@@ -1053,3 +1086,7 @@ const WeddingStorage = {
     return Number(val).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
   }
 };
+
+window.addEventListener('storage', event => {
+  if (event.key === STORAGE_KEY) WeddingStorage.sync();
+});

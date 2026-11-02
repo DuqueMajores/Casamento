@@ -359,7 +359,7 @@ async function submitRsvp(e) {
     // Atualização atômica no servidor: não usa a cópia da lista mantida no celular.
     await WeddingStorage.saveRsvp({ name, email, status, rsvpNotes: personalMsg });
   } catch (error) {
-    errorBox.innerText = `${error.message} Verifique se o site está publicado como Web Service no Render.`;
+    errorBox.innerText = error.message;
     errorBox.classList.remove('hidden');
     return;
   }
